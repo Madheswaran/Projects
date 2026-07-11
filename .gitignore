@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# VSCode
+.vscode/
+
+# Secrets
+.env
+*.pem
+*.key
+
+# SSH
+id_rsa
+id_ed25519
+
+# Logs
+*.log
+
+# Docker
+*.tar
