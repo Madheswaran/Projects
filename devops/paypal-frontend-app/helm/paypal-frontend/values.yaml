@@ -1,0 +1,14 @@
+image:
+  repository: acrpaypal1783567589.azurecr.io/frontend-service
+  tag: latest
+  pullPolicy: Always
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3001
+
+imagePullSecrets:
+  - name: acr-secret
