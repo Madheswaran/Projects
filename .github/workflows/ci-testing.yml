@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'devops/paypal-frontend-app/**'
   workflow_dispatch:
 
 jobs:
