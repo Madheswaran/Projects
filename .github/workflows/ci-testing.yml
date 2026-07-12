@@ -52,22 +52,22 @@ jobs:
           --severity HIGH,CRITICAL \
           ./devops/paypal-frontend-app
 
+    - name: Print Repository Structure
+      run: |
+        pwd
+        find . -type d | sort
+
     - name: Build Docker Image
       run: |
         docker build \
           -t frontend-service:${{ github.sha }} \
-          ./frontend-service
+          ./devops/paypal-frontend-app/frontend-service
 
     - name: Trivy Image Scan
       run: |
         trivy image \
           --severity HIGH,CRITICAL \
-          frontend-service:${{ github.sha }}
-            
-    - name: Debug
-      run: |
-        pwd
-        find . -type d | sort
+          ./devops/paypal-frontend-app/frontend-service:${{ github.sha }}
 
     - name: Success
       if: success()
