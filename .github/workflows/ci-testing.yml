@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'devops/paypal-frontend-app/**'
   workflow_dispatch:
 
 jobs:
@@ -31,7 +29,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Trivy Filesystem Scan
-      uses: aquasecurity/trivy-action@0.33.1
+      uses: aquasecurity/trivy-action@v0.33.1
       with:
         scan-type: fs
         scan-ref: .
