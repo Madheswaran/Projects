@@ -67,7 +67,7 @@ jobs:
       run: |
         trivy image \
           --severity HIGH,CRITICAL \
-          ./devops/paypal-frontend-app/frontend-service:${{ github.sha }}
+          frontend-service:${{ github.sha }}
 
     - name: Success
       if: success()
