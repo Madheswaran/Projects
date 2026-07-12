@@ -1,9 +1,7 @@
 name: PayPal Frontend CI/CD
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: frontend-service
@@ -34,6 +32,13 @@ jobs:
         #run: |
         #pytest
 
+    - name: Trivy Filesystem Scan
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        severity: 'HIGH,CRITICAL'
+
     - name: Azure Login
       uses: azure/login@v2
       with:
@@ -48,6 +53,13 @@ jobs:
         docker build \
           -t ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }} \
           ./frontend-service
+
+    - name: Trivy Image Scan
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        image-ref: ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+        severity: 'HIGH,CRITICAL'
+        exit-code: '1'
 
     - name: Push Docker Image
       run: |
@@ -67,7 +79,7 @@ jobs:
     - name: Deploy to AKS
       run: |
         helm upgrade --install frontend \
-          ./helm/paypal-checkout \
+          ./helm/paypal-frontend \
           --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
           --set image.tag=${{ github.sha }}
 
