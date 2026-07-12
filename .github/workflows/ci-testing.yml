@@ -28,12 +28,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.65.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.65.0_Linux-64bit.deb
+
     - name: Trivy Filesystem Scan
-      uses: aquasecurity/trivy-action@v0.33.1
-      with:
-        scan-type: fs
-        scan-ref: .
-        severity: HIGH,CRITICAL
+      run: |
+        trivy fs \
+          --severity HIGH,CRITICAL \
+          ./devops/paypal-frontend-app
 
     - name: Build Docker Image
       run: |
@@ -42,11 +47,15 @@ jobs:
           ./frontend-service
 
     - name: Trivy Image Scan
-      uses: aquasecurity/trivy-action@v0.33.1
-      with:
-        image-ref: frontend-service:${{ github.sha }}
-        severity: HIGH,CRITICAL
-        exit-code: '1'
+      run: |
+        trivy image \
+          --severity HIGH,CRITICAL \
+          frontend-service:${{ github.sha }}
+            
+    - name: Debug
+      run: |
+        pwd
+        find . -type d | sort
 
     - name: Success
       if: success()
