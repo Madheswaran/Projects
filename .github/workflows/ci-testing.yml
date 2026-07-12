@@ -31,7 +31,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Trivy Filesystem Scan
-      uses: aquasecurity/trivy-action@0.28.0
+      uses: aquasecurity/trivy-action@0.33.1
       with:
         scan-type: fs
         scan-ref: .
@@ -44,7 +44,7 @@ jobs:
           ./frontend-service
 
     - name: Trivy Image Scan
-      uses: aquasecurity/trivy-action@0.28.0
+      uses: aquasecurity/trivy-action@0.33.1
       with:
         image-ref: frontend-service:${{ github.sha }}
         severity: HIGH,CRITICAL
