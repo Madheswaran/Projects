@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: frontend
+  namespace: default
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: frontend
+
+  template:
+
+    metadata:
+      labels:
+        app: frontend
+
+    spec:
+
+      imagePullSecrets:
+      - name: acr-secret
+
+      containers:
+
+      - name: frontend
+
+        image: acrpaypaldev.azurecr.io/frontend-service:194398f5d742e76ee5528c24c57a86a41a86f9f1
+
+        ports:
+        - containerPort: 3001
