@@ -47,3 +47,11 @@ jobs:
 
         docker push \
         ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+
+    - name: Deploy
+      run: |
+
+        kubectl set image deployment/frontend-service-v1 \
+          frontend-service=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+
+        kubectl rollout status deployment/frontend-service-v1
