@@ -1,19 +1,19 @@
 from flask import Flask, render_template_string
 #from app import app
-import subprocess
-import os
+#import subprocess
+#import os
 
 app = Flask(__name__)
 
-user_input = input()
+#user_input = input()
 
-os.system(user_input)
+#os.system(user_input)
 
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PayPal Checkout</title>
+    <title>PayPal frontend Service</title>
 </head>
 <body>
 

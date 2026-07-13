@@ -2,26 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: frontend
+  name: frontend-service
 
 spec:
   replicas: {{ .Values.replicaCount }}
 
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-service
 
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend-service
 
     spec:
       imagePullSecrets:
 {{- toYaml .Values.imagePullSecrets | nindent 8 }}
 
       containers:
-      - name: frontend
+      - name: frontend-service
 
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
 
