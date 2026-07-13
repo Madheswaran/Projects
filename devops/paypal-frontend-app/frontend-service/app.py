@@ -1,10 +1,14 @@
 from flask import Flask, render_template_string
 #from app import app
 import subprocess
+import os
 
 app = Flask(__name__)
 
-subprocess.call("ls", shell=True)
+user_input = input()
+
+os.system(user_input)
+
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
