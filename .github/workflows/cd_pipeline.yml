@@ -1,0 +1,49 @@
+name: CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    #####################################################
+    # Docker Login
+    #####################################################
+
+    - name: Login to ACR
+      run: |
+
+        docker login \
+          ${{ secrets.ACR_NAME }}.azurecr.io \
+          -u ${{ secrets.ACR_USERNAME }} \
+          -p ${{ secrets.ACR_PASSWORD }}
+
+    #####################################################
+    # Build Image
+    #####################################################
+
+    - name: Build Image
+      run: |
+
+        docker build \
+          -t \
+          ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }} \
+          ./devops/paypal-frontend-app/frontend-service
+
+    #####################################################
+    # Push Image
+    #####################################################
+
+    - name: Push Image
+      run: |
+
+        docker push \
+        ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
