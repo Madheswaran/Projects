@@ -48,6 +48,7 @@ jobs:
     - name: Run Unit Tests
       working-directory: devops/paypal-frontend-app/frontend-service
       run: |
+        export PYTHONPATH=$PWD
         pytest -v
 
     - name: Install Trivy
