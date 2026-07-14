@@ -1,4 +1,4 @@
-name: CD Pipeline
+name: Login test
 
 on:
   workflow_dispatch:
@@ -14,11 +14,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup kubeconfig
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Get AKS Credentials
       run: |
 
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+        az aks get-credentials \
+          --resource-group ${{ secrets.RESOURCE_GROUP }} \
+          --name ${{ secrets.AKS_CLUSTER }} \
+          --overwrite-existing
 
     - name: Verify Cluster
       run: |

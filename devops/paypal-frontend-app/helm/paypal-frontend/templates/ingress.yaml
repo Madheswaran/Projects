@@ -24,7 +24,7 @@ spec:
 
           service:
 
-            name: frontend
+            name: frontend-service
 
             port:
 
