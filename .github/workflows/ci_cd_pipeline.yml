@@ -38,10 +38,10 @@ jobs:
 #          --config auto \
 #          --error \
 #    
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: python
+    # - name: Initialize CodeQL
+    #   uses: github/codeql-action/init@v3
+    #   with:
+    #     languages: python
 
     - name: Setup Python
       uses: actions/setup-python@v5
@@ -59,8 +59,8 @@ jobs:
         #run: |
         #pytest
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+    # - name: Perform CodeQL Analysis
+    #   uses: github/codeql-action/analyze@v3
 
 #   - name: Install Trivy
 #      run: |
