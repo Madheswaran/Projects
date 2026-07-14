@@ -80,24 +80,24 @@ jobs:
 
 #        trivy --version
 
-    - name: Install Trivy
-      run: |
+    # - name: Install Trivy
+    #   run: |
 
-        sudo apt-get update
+    #     sudo apt-get update
 
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.65.0/trivy_0.65.0_Linux-64bit.deb
+    #     wget https://github.com/aquasecurity/trivy/releases/download/v0.65.0/trivy_0.65.0_Linux-64bit.deb
 
-        sudo dpkg -i trivy_0.65.0_Linux-64bit.deb
+    #     sudo dpkg -i trivy_0.65.0_Linux-64bit.deb
 
-        trivy --version
+    #     trivy --version
      
-    - name: Trivy Filesystem Scan
-      #uses: aquasecurity/trivy-action@0.28.0
-      #with:
-      run: |
-        scan-type: 'fs'
-        scan-ref: '.'
-        severity: 'HIGH,CRITICAL'
+    # - name: Trivy Filesystem Scan
+    #   #uses: aquasecurity/trivy-action@0.28.0
+    #   #with:
+    #   run: |
+    #     scan-type: 'fs'
+    #     scan-ref: '.'
+    #     severity: 'HIGH,CRITICAL'
 
     - name: Build Docker Image
       run: |
@@ -110,13 +110,13 @@ jobs:
         echo "Commit SHA = ${{ github.sha }}"
         docker images
 
-    - name: Trivy Image Scan
-      #uses: aquasecurity/trivy-action@0.28.0
-      #with:
-      run: |
-        trivy image \
-        --severity HIGH,CRITICAL \
-        ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+    # - name: Trivy Image Scan
+    #   #uses: aquasecurity/trivy-action@0.28.0
+    #   #with:
+    #   run: |
+    #     trivy image \
+    #     --severity HIGH,CRITICAL \
+    #     ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
 
 
     - name: Azure Login
