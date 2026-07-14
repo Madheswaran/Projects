@@ -1,6 +1,9 @@
 name: PayPal Frontend CI/CD
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -16,6 +19,26 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Run Semgrep Scan
+      uses: semgrep/semgrep-action@v1
+      with:
+        config: auto
+
+#    - name: Install Semgrep
+#      run: |
+#        python -m pip install semgrep
+
+#    - name: Run Semgrep Scan
+#      run: |
+#        semgrep scan \
+#          --config auto \
+#          --error \
+#    
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
@@ -27,17 +50,56 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-        #    - name: Run Unit Tests
+        #- name: Run Unit Tests
         #working-directory: frontend-service
         #run: |
         #pytest
 
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install wget gnupg lsb-release -y
+
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | \
+          gpg --dearmor | \
+          sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
+
+        echo \
+          "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | \
+          sudo tee /etc/apt/sources.list.d/trivy.list
+
+        sudo apt-get update
+        sudo apt-get install trivy -y
+
+        trivy --version
+        
     - name: Trivy Filesystem Scan
       uses: aquasecurity/trivy-action@v0.33.1
       with:
         scan-type: 'fs'
         scan-ref: '.'
         severity: 'HIGH,CRITICAL'
+
+    - name: Build Docker Image
+      run: |
+        docker build \
+          -t ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }} \
+          ./devops/paypal-frontend-app/frontend-service
+
+    - name: Debug Docker Images
+      run: |
+        echo "Commit SHA = ${{ github.sha }}"
+        docker images
+
+    - name: Trivy Image Scan
+      uses: aquasecurity/trivy-action@v0.33.1
+      with:
+        image-ref: ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+        severity: 'HIGH,CRITICAL'
+        exit-code: '1'
 
     - name: Azure Login
       uses: azure/login@v2
@@ -47,20 +109,7 @@ jobs:
     - name: Login to Azure Container Registry
       run: |
         az acr login --name ${{ secrets.ACR_NAME }}
-
-    - name: Build Docker Image
-      run: |
-        docker build \
-          -t ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }} \
-          ./frontend-service
-
-    - name: Trivy Image Scan
-      uses: aquasecurity/trivy-action@v0.33.1
-      with:
-        image-ref: ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
-        severity: 'HIGH,CRITICAL'
-        exit-code: '1'
-
+        
     - name: Push Docker Image
       run: |
         docker push \
@@ -78,16 +127,14 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-        helm upgrade --install frontend \
-          ./helm/paypal-frontend \
-          --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
-          --set image.tag=${{ github.sha }}
+          helm upgrade --install frontend \
+            ./helm/paypal-frontend \
+            --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
+            --set image.tag=${{ github.sha }}
 
-    - name: Verify Deployment
-      run: |
-        kubectl rollout status deployment/frontend
-        kubectl get pods
-        kubectl get svc
+          kubectl rollout status deployment/frontend --timeout=300s
+          kubectl get pods
+          kubectl get svc
 
     - name: Success
       if: success()
