@@ -146,7 +146,7 @@ jobs:
     - name: Deploy to AKS
       run: |
           helm upgrade --install frontend \
-            ./helm/paypal-frontend \
+            ./devops/paypal-frontend-app/helm/paypal-frontend \
             --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
             --set image.tag=${{ github.sha }}
 
