@@ -38,6 +38,6 @@ jobs:
       run: |
 
         kubectl set image deployment/frontend-service \
-          frontend=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:v1
+          frontend=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
 
         kubectl rollout status deployment/frontend-service
