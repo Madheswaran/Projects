@@ -1,0 +1,63 @@
+| Area       | Command                                                                                   | Use                             |
+| ---------- | ----------------------------------------------------------------------------------------- | ------------------------------- |
+| Azure      | `az login`                                                                                | Login to Azure                  |
+| Azure      | `az account show`                                                                         | Show current subscription       |
+| Azure      | `az group list -o table`                                                                  | List Resource Groups            |
+| Azure      | `az account show --query id -o tsv`                                                       | Get Subscription ID             |
+| ACR        | `az acr create --resource-group RG --name ACR --sku Basic`                                | Create Azure Container Registry |
+| ACR        | `az acr login --name ACR`                                                                 | Login Docker to ACR             |
+| ACR        | `az acr credential show --name ACR`                                                       | Get ACR username/password       |
+| ACR        | `az acr repository list --name ACR -o table`                                              | List repositories               |
+| ACR        | `az acr repository show-tags --name ACR --repository frontend-service -o table`           | List image tags                 |
+| Docker     | `docker build -t frontend-service:v1 .`                                                   | Build Docker image              |
+| Docker     | `docker images`                                                                           | List images                     |
+| Docker     | `docker tag SRC DEST`                                                                     | Add another tag                 |
+| Docker     | `docker push IMAGE`                                                                       | Push image to registry          |
+| Docker     | `docker pull IMAGE`                                                                       | Pull image                      |
+| Docker     | `docker ps`                                                                               | Running containers              |
+| Docker     | `docker ps -a`                                                                            | All containers                  |
+| Docker     | `docker logs CONTAINER`                                                                   | View logs                       |
+| Docker     | `docker exec -it CONTAINER bash`                                                          | Login into container            |
+| Security   | `trivy fs .`                                                                              | Filesystem vulnerability scan   |
+| Security   | `trivy image IMAGE`                                                                       | Docker image scan               |
+| Security   | `semgrep scan .`                                                                          | Source code scan                |
+| AKS        | `az aks create`                                                                           | Create AKS cluster              |
+| AKS        | `az aks list -o table`                                                                    | List clusters                   |
+| AKS        | `az aks get-credentials`                                                                  | Download kubeconfig             |
+| Kubernetes | `kubectl cluster-info`                                                                    | Verify cluster                  |
+| Kubernetes | `kubectl get nodes`                                                                       | List worker nodes               |
+| Kubernetes | `kubectl get all`                                                                         | List all resources              |
+| Kubernetes | `kubectl get pods`                                                                        | List pods                       |
+| Kubernetes | `kubectl get svc`                                                                         | List services                   |
+| Kubernetes | `kubectl get deployment`                                                                  | List deployments                |
+| Kubernetes | `kubectl get rs`                                                                          | List replicasets                |
+| Kubernetes | `kubectl get events`                                                                      | View cluster events             |
+| Kubernetes | `kubectl get pods -w`                                                                     | Watch pods live                 |
+| Kubernetes | `kubectl describe pod POD`                                                                | Pod troubleshooting             |
+| Kubernetes | `kubectl logs POD`                                                                        | Pod logs                        |
+| Kubernetes | `kubectl create deployment frontend --image=IMAGE`                                        | Create deployment               |
+| Kubernetes | `kubectl expose deployment frontend --type=LoadBalancer`                                  | Create service                  |
+| Kubernetes | `kubectl apply -f deployment.yaml`                                                        | Declarative deployment          |
+| Kubernetes | `kubectl delete -f deployment.yaml`                                                       | Delete resources                |
+| Kubernetes | `kubectl delete pod POD`                                                                  | Delete pod                      |
+| Kubernetes | `kubectl rollout status deployment/frontend`                                              | Watch deployment                |
+| Kubernetes | `kubectl rollout history deployment/frontend`                                             | Deployment history              |
+| Kubernetes | `kubectl rollout undo deployment/frontend`                                                | Rollback                        |
+| Kubernetes | `kubectl set image deployment/frontend frontend=IMAGE`                                    | Update image                    |
+| Kubernetes | `kubectl get deployment frontend -o yaml`                                                 | View deployment YAML            |
+| Kubernetes | `kubectl get deployment frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'` | Current image                   |
+| Secrets    | `kubectl create secret docker-registry acr-secret ...`                                    | Create image pull secret        |
+| Secrets    | `kubectl get secret`                                                                      | List secrets                    |
+| Secrets    | `kubectl describe secret acr-secret`                                                      | View secret details             |
+| Helm       | `helm create paypal-frontend`                                                             | Create chart                    |
+| Helm       | `helm lint .`                                                                             | Validate chart                  |
+| Helm       | `helm install frontend .`                                                                 | Install chart                   |
+| Helm       | `helm upgrade frontend .`                                                                 | Upgrade release                 |
+| Helm       | `helm list`                                                                               | List releases                   |
+| Helm       | `helm uninstall frontend`                                                                 | Remove release                  |
+| Git        | `git status`                                                                              | Current changes                 |
+| Git        | `git add .`                                                                               | Stage files                     |
+| Git        | `git commit -m "msg"`                                                                     | Commit                          |
+| Git        | `git push`                                                                                | Push to GitHub                  |
+| Git        | `git log --oneline`                                                                       | Commit history                  |
+
