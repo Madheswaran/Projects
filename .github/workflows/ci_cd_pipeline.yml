@@ -79,10 +79,22 @@ jobs:
 #        sudo apt-get install trivy -y
 
 #        trivy --version
+
+    - name: Install Trivy
+      run: |
+
+        sudo apt-get update
+
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.65.0/trivy_0.65.0_Linux-64bit.deb
+
+        sudo dpkg -i trivy_0.65.0_Linux-64bit.deb
+
+        trivy --version
      
     - name: Trivy Filesystem Scan
-      uses: aquasecurity/trivy-action@0.28.0
-      with:
+      #uses: aquasecurity/trivy-action@0.28.0
+      #with:
+      run: |
         scan-type: 'fs'
         scan-ref: '.'
         severity: 'HIGH,CRITICAL'
@@ -99,11 +111,13 @@ jobs:
         docker images
 
     - name: Trivy Image Scan
-      uses: aquasecurity/trivy-action@0.28.0
-      with:
-        image-ref: ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
-        severity: 'HIGH,CRITICAL'
-        exit-code: '1'
+      #uses: aquasecurity/trivy-action@0.28.0
+      #with:
+      run: |
+        trivy image \
+        --severity HIGH,CRITICAL \
+        ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+
 
     - name: Azure Login
       uses: azure/login@v2
