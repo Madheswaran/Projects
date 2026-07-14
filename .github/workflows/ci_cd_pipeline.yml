@@ -154,6 +154,12 @@ jobs:
           kubectl get pods
           kubectl get svc
 
+    - name: Verify Deployment
+      run: |
+        kubectl get all
+        kubectl rollout status deployment \
+          $(kubectl get deployment -o jsonpath='{.items[0].metadata.name}')
+
     - name: Success
       if: success()
       run: echo "Deployment Successful"
