@@ -27,7 +27,7 @@ spec:
 
       - name: frontend
 
-        image: acrpaypaldev.azurecr.io/frontend-service:194398f5d742e76ee5528c24c57a86a41a86f9f1
+        image: acrpaypal1784003128.azurecr.io/frontend-service:v1
 
         ports:
         - containerPort: 3001
