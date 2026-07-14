@@ -145,20 +145,28 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-          helm upgrade --install frontend \
-            ./devops/paypal-frontend-app/helm/paypal-frontend \
-            --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
-            --set image.tag=${{ github.sha }}
-
-          kubectl rollout status deployment/frontend --timeout=300s
-          kubectl get pods
-          kubectl get svc
+        helm upgrade --install frontend \
+          ./devops/paypal-frontend-app/helm/paypal-frontend \
+          --set image.repository=${{ secrets.ACR_NAME }}.azurecr.io/frontend-service \
+          --set image.tag=${{ github.sha }}
 
     - name: Verify Deployment
       run: |
+
+        echo "===== HELM RELEASES ====="
+        helm list
+
+        echo "===== DEPLOYMENTS ====="
+        kubectl get deployment
+
+        echo "===== ALL RESOURCES ====="
         kubectl get all
-        kubectl rollout status deployment \
-          $(kubectl get deployment -o jsonpath='{.items[0].metadata.name}')
+
+        DEPLOYMENT_NAME=$(kubectl get deployment -o jsonpath='{.items[0].metadata.name}')
+
+        echo "Deployment Name: $DEPLOYMENT_NAME"
+
+        kubectl rollout status deployment/$DEPLOYMENT_NAME
 
     - name: Success
       if: success()
