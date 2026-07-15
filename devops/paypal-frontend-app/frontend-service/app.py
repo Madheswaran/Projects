@@ -9,9 +9,6 @@ app = Flask(__name__)
 
 #os.system(user_input)
 
-APP_NAME = os.getenv("APP_NAME", "Paypal")
-ENV_NAME = os.getenv("ENV_NAME", "DEV")
-
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
@@ -54,7 +51,10 @@ Password
 
 @app.route("/")
 def home():
-    return render_template_string(HOME_PAGE)
+    
+    APP_NAME = os.getenv("APP_NAME", "Paypal")
+    ENV_NAME = os.getenv("ENV_NAME", "DEV")
+    return render_template_string(HOME_PAGE, APP_NAME=APP_NAME, ENV_NAME=ENV_NAME)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)
