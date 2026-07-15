@@ -1,6 +1,6 @@
 image:
   repository: acrpaypal1784092813.azurecr.io/frontend-service
-  tag: 900cb1a4665e683cd7e8b984424fe46b938d6f19
+  tag: ""
   pullPolicy: Always
 
 replicaCount: 1
@@ -23,3 +23,7 @@ ingress:
   path: /
 
   pathType: Prefix
+
+config:
+  appName: "Paypal Frontend"
+  environment: "DEV"

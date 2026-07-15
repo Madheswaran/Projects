@@ -18,12 +18,16 @@ spec:
 
     spec:
       imagePullSecrets:
-{{- toYaml .Values.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
 
       containers:
       - name: frontend-service
 
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+        envFrom:
+          - configMapRef:
+              name: frontend-config
 
         imagePullPolicy: {{ .Values.image.pullPolicy }}
 

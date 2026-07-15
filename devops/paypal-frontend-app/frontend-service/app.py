@@ -9,6 +9,9 @@ app = Flask(__name__)
 
 #os.system(user_input)
 
+APP_NAME = os.getenv("APP_NAME", "Paypal")
+ENV_NAME = os.getenv("ENV_NAME", "DEV")
+
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
@@ -17,7 +20,9 @@ HOME_PAGE = """
 </head>
 <body>
 
-<h1>PayPal Checkout</h1>
+<h1>{{ APP_NAME }}</h1>
+
+<h2>Environment : {{ ENV_NAME }}</h2>
 
 <h3>Welcome</h3>
 
@@ -53,9 +58,3 @@ def home():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)
-
-
-#def test_home():
-#    client = app.test_client()
-#    response = client.get("/")
-#    assert response.status_code == 200
