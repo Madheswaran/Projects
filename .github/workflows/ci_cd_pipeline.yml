@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   security-events: write    
 
 env:
@@ -122,6 +122,32 @@ jobs:
       run: |
         docker push \
           ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service:${{ github.sha }}
+
+    - name: Update Helm values.yaml
+      run: |
+
+        sed -i \
+          "s/tag:.*/tag: ${{ github.sha }}/" \
+          devops/paypal-frontend-app/helm/paypal-frontend/values.yaml
+
+    - name: Commit updated values.yaml
+      run: |
+
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+
+        git add \
+          devops/paypal-frontend-app/helm/paypal-frontend/values.yaml
+
+        git commit -m \
+          "Updated image tag to ${{ github.sha }}" \
+          || echo "No changes"
+
+    - name: Push changes
+      run: |
+
+        git push \
+          https://${{ secrets.GH_PAT }}@github.com/Madheswaran/Projects.git
 
     - name: Get AKS Credentials
       run: |
