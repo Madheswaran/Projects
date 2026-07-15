@@ -1,9 +1,9 @@
 name: PayPal Frontend CI/CD
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -54,10 +54,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # - name: Run Unit Tests
-    #   working-directory: devops/paypal-frontend-app/frontend-service
-    #   run: |
-    #     pytest
+    - name: Run Unit Tests
+      working-directory: devops/paypal-frontend-app/frontend-service
+      run: |
+        export PYTHONPATH=$PWD
+        pytest -v
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3

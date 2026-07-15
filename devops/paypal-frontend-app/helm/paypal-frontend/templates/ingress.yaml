@@ -1,24 +1,24 @@
 apiVersion: networking.k8s.io/v1
-
 kind: Ingress
 
 metadata:
-
-  name: paypal-ingress
+  name: frontend-ingress
 
 spec:
 
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
 
   rules:
+
+  # - host: {{ .Values.ingress.host }}
 
   - http:
 
       paths:
 
-      - path: /
+      - path: {{ .Values.ingress.path }}
 
-        pathType: Prefix
+        pathType: {{ .Values.ingress.pathType }}
 
         backend:
 
