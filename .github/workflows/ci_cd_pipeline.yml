@@ -28,15 +28,15 @@ jobs:
       with:
         config: auto
 
-    - name: Install Semgrep
-      run: |
-        python -m pip install semgrep
+    # - name: Install Semgrep
+    #   run: |
+    #     python -m pip install semgrep
 
-    - name: Run Semgrep Scan
-      run: |
-        semgrep scan \
-          --config auto \
-          --error \
+    # - name: Run Semgrep Scan
+    #   run: |
+    #     semgrep scan \
+    #       --config auto \
+    #       --error \
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
