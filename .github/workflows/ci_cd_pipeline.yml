@@ -190,7 +190,8 @@ jobs:
 
     - name: Wait for Deployment
       run: |
-        kubectl rollout status deployment/frontend-service
+        echo "Git commit updated successfully."
+        echo "Argo will perform deployment."
 
     - name: Verify Argo App
       run: |
