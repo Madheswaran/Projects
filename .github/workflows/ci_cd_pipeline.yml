@@ -188,19 +188,42 @@ jobs:
     #     kubectl rollout status deployment/$DEPLOYMENT_NAME
 
 
-    - name: Wait for Deployment
-      run: |
-        echo "Git commit updated successfully."
-        echo "Argo will perform deployment."
+#################################################
 
-    - name: Verify Argo App
+    - name: Install ArgoCD CLI
       run: |
-        kubectl get applications -n argocd
+          curl -sSL -o argocd \
+          https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 
-    - name: Show Resources
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/
+
+    #################################################
+
+    - name: Login to ArgoCD
       run: |
-        kubectl get all
-        kubectl get ingress
+          argocd login \
+          ${{ secrets.ARGOCD_SERVER }} \
+          --username ${{ secrets.ARGOCD_USERNAME }} \
+          --password ${{ secrets.ARGOCD_PASSWORD }} \
+          --insecure
+
+    #################################################
+
+    - name: Wait for Deployment Completion
+      run: |
+          argocd app wait paypal-frontend \
+          --health \
+          --sync \
+          --timeout 300
+
+    #################################################
+
+    - name: Show Application Status
+      run: |
+          argocd app get paypal-frontend
+
+    #################################################
 
     - name: Success
       if: success()
