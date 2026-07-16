@@ -56,12 +56,17 @@ def home():
     ENV_NAME = os.getenv("ENV_NAME", "DEV")
 
     API_KEY = os.getenv("API_KEY")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    if API_KEY:
+        API_KEY_MASKED = API_KEY[:5] + "*****"
+    else:
+        API_KEY_MASKED = "NOT_SET"
+
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "dummy-password")
 
     return render_template_string(HOME_PAGE, 
                                     APP_NAME=APP_NAME, 
                                         ENV_NAME=ENV_NAME, 
-                                            API_KEY=API_KEY[:5] + "*****")
+                                            API_KEY=API_KEY_MASKED)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)

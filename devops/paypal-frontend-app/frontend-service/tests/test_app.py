@@ -10,6 +10,9 @@ sys.path.append(
     )
 )
 
+os.environ["API_KEY"] = "test-api-key"
+os.environ["DB_PASSWORD"] = "test-password"
+
 from app import app 
 
 def test_home():
