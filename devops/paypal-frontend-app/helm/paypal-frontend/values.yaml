@@ -1,6 +1,6 @@
 image:
-  repository: acrpaypal1784129343.azurecr.io/frontend-service
-  tag: f37a2f16ae079b28a9e1585d94795cac2e36f75a
+  repository: acrpaypal1784177736.azurecr.io/frontend-service
+  tag: latest
   pullPolicy: Always
 
 replicaCount: 1
@@ -27,3 +27,7 @@ ingress:
 config:
   appName: "Paypal Frontend"
   environment: "DEV"
+
+secret:
+  apiKey: "paypal-api-key-123"
+  dbPassword: "paypal-db-password"

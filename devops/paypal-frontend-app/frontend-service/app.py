@@ -54,7 +54,14 @@ def home():
     
     APP_NAME = os.getenv("APP_NAME", "Paypal")
     ENV_NAME = os.getenv("ENV_NAME", "DEV")
-    return render_template_string(HOME_PAGE, APP_NAME=APP_NAME, ENV_NAME=ENV_NAME)
+
+    API_KEY = os.getenv("API_KEY")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+
+    return render_template_string(HOME_PAGE, 
+                                    APP_NAME=APP_NAME, 
+                                        ENV_NAME=ENV_NAME, 
+                                            API_KEY=API_KEY[:5] + "*****")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)

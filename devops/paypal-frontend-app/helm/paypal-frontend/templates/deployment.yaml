@@ -29,6 +29,9 @@ spec:
           - configMapRef:
               name: frontend-config
 
+          - secretRef:
+              name: frontend-secret
+
         imagePullPolicy: {{ .Values.image.pullPolicy }}
 
         ports:
