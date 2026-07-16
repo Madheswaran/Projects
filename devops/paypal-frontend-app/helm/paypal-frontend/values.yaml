@@ -31,3 +31,12 @@ config:
 secret:
   apiKey: "paypal-api-key-123"
   dbPassword: "paypal-db-password"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+  limits:
+    cpu: "300m"
+    memory: "256Mi"
