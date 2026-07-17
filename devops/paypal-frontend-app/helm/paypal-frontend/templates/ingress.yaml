@@ -2,7 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 
 metadata:
+  #testing ingress for argocd
   name: frontend-ingress
+  annotations:
+    link.argocd.argoproj.io/external-link: http://20.241.252.62
 
 spec:
 
