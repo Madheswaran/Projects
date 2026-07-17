@@ -1,5 +1,5 @@
 image:
-  repository: acrpaypal1784177736.azurecr.io/frontend-service
+  repository: acrpaypal1784261762.azurecr.io/frontend-service
   tag: latest
   pullPolicy: Always
 
