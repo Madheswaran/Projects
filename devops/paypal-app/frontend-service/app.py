@@ -2,6 +2,7 @@ from flask import Flask, render_template_string
 #from app import app
 #import subprocess
 import os
+import requests
 
 app = Flask(__name__)
 
@@ -67,7 +68,16 @@ def home():
                                     APP_NAME=APP_NAME, 
                                         ENV_NAME=ENV_NAME, 
                                             API_KEY=API_KEY_MASKED)
-                                
+
+@app.route("/users")
+def users():
+
+    response = requests.get(
+        "http://user-service/users"
+    )
+
+    return response.json()
+                               
 @app.route("/health")
 def health():
     return {"status": "UP"}, 200
