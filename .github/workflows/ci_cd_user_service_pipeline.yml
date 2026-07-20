@@ -1,0 +1,193 @@
+name: PayPal User Service CI/CD
+
+on:
+  # push:
+  #   branches:
+  #     - main
+    # paths:
+    #   - 'devops/paypal-app/user-service/**'
+    #   - 'devops/paypal-app/helm/user-service/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  security-events: write    
+
+env:
+  IMAGE_NAME: user-service
+  IMAGE_REPO: ${{ secrets.ACR_NAME }}.azurecr.io/user-service
+
+concurrency:
+  group: user-service
+  cancel-in-progress: true
+
+jobs:
+  build-test-deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]'))
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Run Semgrep Scan
+      uses: semgrep/semgrep-action@v1
+      with:
+        config: auto
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Dependencies
+      working-directory: devops/paypal-app/user-service
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Unit Tests
+      working-directory: devops/paypal-app/user-service
+      run: |
+        export PYTHONPATH=$PWD
+        pytest -v
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install wget gnupg lsb-release -y
+
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | \
+          gpg --dearmor | \
+          sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
+
+        echo \
+          "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | \
+          sudo tee /etc/apt/sources.list.d/trivy.list
+
+        sudo apt-get update
+        sudo apt-get install trivy -y
+
+        trivy --version
+   
+    - name: Trivy Filesystem Scan
+      run: |
+        trivy fs \
+          --severity HIGH,CRITICAL \
+          ./devops/paypal-app/user-service
+          
+    - name: Build Docker Image
+      run: |
+        docker build \
+          -t $IMAGE_REPO:${{ github.sha }} \
+          ./devops/paypal-app/user-service
+
+    - name: Debug Docker Images
+      run: |
+        echo "Commit SHA = ${{ github.sha }}"
+        docker images
+
+    - name: Trivy Image Scan
+      #uses: aquasecurity/trivy-action@0.28.0
+      #with:
+      run: |
+        trivy image \
+        --severity HIGH,CRITICAL \
+        $IMAGE_REPO:${{ github.sha }}
+
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Login to Azure Container Registry
+      run: |
+        az acr login --name ${{ secrets.ACR_NAME }}
+        
+    - name: Push Docker Image
+      run: |
+        docker push \
+          $IMAGE_REPO:${{ github.sha }}
+
+    - name: Update Helm values.yaml
+      run: |
+
+        sed -i \
+          "s/tag:.*/tag: ${{ github.sha }}/" \
+          devops/paypal-app/helm/user-service/values.yaml
+
+    - name: Commit updated values.yaml
+      run: |
+
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+
+        git add \
+          devops/paypal-app/helm/user-service/values.yaml
+        git commit -m "Update image tag to ${{ github.sha }} [skip ci]" \
+        || echo "No changes to commit"
+
+    - name: Push changes
+      run: |
+        git remote set-url origin \
+        https://${{ secrets.GH_PAT }}@github.com/Madheswaran/Projects.git
+        git diff --cached --quiet || git push origin HEAD:main
+        
+    - name: Install ArgoCD CLI
+      run: |
+          curl -sSL -o argocd \
+          https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/
+
+    #################################################
+
+    - name: Login to ArgoCD
+      run: |
+          argocd login \
+          ${{ secrets.ARGOCD_SERVER }} \
+          --username ${{ secrets.ARGOCD_USERNAME }} \
+          --password ${{ secrets.ARGOCD_PASSWORD }} \
+          --insecure
+
+    #################################################
+    - name: Wait for Argo Refresh
+      run: sleep 30
+
+    - name: Wait for Deployment Completion
+      run: |
+          argocd app wait user-service \
+          --health \
+          --sync \
+          --timeout 300
+    #################################################
+
+    - name: Show Application Status
+      run: |
+          argocd app get user-service
+
+    #################################################
+
+    - name: Success
+      if: success()
+      run: echo " ARGO Deployment Successful"
+
+    - name: Failure
+      if: failure()
+      run: echo "Deployment Failed"

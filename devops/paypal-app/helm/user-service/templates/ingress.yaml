@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  #testing ingress for argocd
+  name: user-service-ingress
+  # annotations:
+  #   link.argocd.argoproj.io/external-link: http://20.241.252.62
+
+spec:
+
+  ingressClassName: {{ .Values.ingress.className }}
+
+  rules:
+
+  # - host: {{ .Values.ingress.host }}
+
+  - http:
+
+      paths:
+
+      - path: {{ .Values.ingress.path }}
+
+        pathType: {{ .Values.ingress.pathType }}
+
+        backend:
+
+          service:
+
+            name: user-service
+
+            port:
+
+              number: 80

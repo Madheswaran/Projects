@@ -1,0 +1,41 @@
+image:
+  repository: acrpaypal1784261762.azurecr.io/user-service
+  tag: 79459d7c3a5897f43f51810f0d98c13958314584
+  pullPolicy: Always
+
+replicaCount: 3
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3002
+
+imagePullSecrets:
+  - name: acr-secret
+
+ingress:
+  enabled: true
+
+  className: nginx
+
+  # host: paypal.local
+
+  path: /
+
+  pathType: Prefix
+
+config:
+  appName: "User Service"
+  environment: "DEV"
+
+secret:
+  existingSecret: user-service-secret
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+  limits:
+    cpu: "300m"
+    memory: "256Mi"

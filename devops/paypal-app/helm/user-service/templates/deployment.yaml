@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: user-service
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: user-service
+
+  template:
+    metadata:
+      labels:
+        app: user-service
+
+    spec:
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+        
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - user-service
+                  topologyKey: kubernetes.io/hostname      
+
+      containers:
+      - name: user-service
+
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+        envFrom:
+          - configMapRef:
+              name: user-service-config
+
+          - secretRef:
+              name: user-service-secret
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 20
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          failureThreshold: 30
+          periodSeconds: 10
+
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+        ports:
+        - containerPort: {{ .Values.service.targetPort }}
