@@ -152,7 +152,7 @@ jobs:
         git config --global user.name "github-actions"
 
         git add \
-          devops/paypal-frontend-app/helm/frontend-service/values.yaml
+          devops/paypal-app/helm/frontend-service/values.yaml
         git commit -m "Update image tag to ${{ github.sha }} [skip ci]" \
         || echo "No changes to commit"
 
