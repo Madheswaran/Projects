@@ -224,7 +224,7 @@ jobs:
 
     - name: Wait for Deployment Completion
       run: |
-          argocd app wait paypal-frontend \
+          argocd app wait frontend-service \
           --health \
           --sync \
           --timeout 300
@@ -233,7 +233,7 @@ jobs:
 
     - name: Show Application Status
       run: |
-          argocd app get paypal-frontend
+          argocd app get frontend-service
 
     #################################################
 
