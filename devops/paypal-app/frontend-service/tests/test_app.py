@@ -1,5 +1,6 @@
 import sys
 import os
+import requests
 
 sys.path.append(
     os.path.abspath(
