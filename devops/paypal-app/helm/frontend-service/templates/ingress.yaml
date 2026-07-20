@@ -3,7 +3,7 @@ kind: Ingress
 
 metadata:
   #testing ingress for argocd
-  name: frontend-ingress
+  name: frontend-service-ingress
   annotations:
     link.argocd.argoproj.io/external-link: http://20.241.252.62
 

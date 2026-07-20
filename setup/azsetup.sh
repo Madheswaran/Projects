@@ -254,4 +254,10 @@ echo ""
 echo "ARGO URL"
 echo "http://$ARGO_IP"
 echo ""
+
+az group list -o table
+az acr list -o table
+az aks list -o table
+az account show
+
 echo "POST AKS SETUP COMPLETED"

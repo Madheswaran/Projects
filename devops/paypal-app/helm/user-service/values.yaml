@@ -1,6 +1,6 @@
 image:
-  repository: acrpaypal1784261762.azurecr.io/user-service
-  tag: 79459d7c3a5897f43f51810f0d98c13958314584
+  repository: acrpaypal1784528210.azurecr.io/user-service
+  tag: 54a684cdb9268082d0dc7a5eb52a80f3adaf1b37
   pullPolicy: Always
 
 replicaCount: 3

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: frontend-config
+  name: frontend-service-config
 data:
   APP_NAME: {{ .Values.config.appName | quote }}
   ENV_NAME: {{ .Values.config.environment | quote }}

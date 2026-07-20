@@ -23,7 +23,7 @@ def test_users():
 
     assert response.status_code == 200
 
-    data.response.get_json() 
+    data = response.get_json() 
 
     assert length(data) == 2 
 
