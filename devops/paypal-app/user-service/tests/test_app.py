@@ -25,9 +25,9 @@ def test_users():
 
     data = response.get_json() 
 
-    assert length(data) == 2 
+    assert len(data) == 2 
 
-    assert data[0]['name'] == 'Ganesh'
+    assert data[0]['name'] == 'Ganesha'
 
 def test_health():
 
