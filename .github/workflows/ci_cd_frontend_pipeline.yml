@@ -145,6 +145,7 @@ jobs:
           "s/tag:.*/tag: ${{ github.sha }}/" \
           devops/paypal-app/helm/frontend-service/values.yaml
 
+    #we do this commit for argo to know that there is a new image tag to deploy. This is because we are using the helm chart in argo and not the docker image directly.
     - name: Commit updated values.yaml
       run: |
 
