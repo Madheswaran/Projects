@@ -18,7 +18,7 @@ env:
   IMAGE_REPO: ${{ secrets.ACR_NAME }}.azurecr.io/frontend-service
 
 concurrency:
-  group: user-service
+  group: frontend-service
   cancel-in-progress: true
 
 jobs:
