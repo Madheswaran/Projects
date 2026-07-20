@@ -20,7 +20,7 @@ ingress:
 
   # host: paypal.local
 
-  path: /
+  path: /users
 
   pathType: Prefix
 
