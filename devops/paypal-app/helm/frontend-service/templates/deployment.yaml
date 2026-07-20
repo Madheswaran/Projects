@@ -40,10 +40,10 @@ spec:
 
         envFrom:
           - configMapRef:
-              name: frontend-config
+              name: frontend-service-config
 
           - secretRef:
-              name: frontend-secret
+              name: frontend-service-secret
         
         livenessProbe:
           httpGet:

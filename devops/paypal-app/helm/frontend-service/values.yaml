@@ -1,6 +1,6 @@
 image:
   repository: acrpaypal1784528210.azurecr.io/frontend-service
-  tag: 69d2ed1b419a72251b509452955e3f7171c5c292
+  tag: 04aadddc9a8f0100da4d22089bbc7be56c8681bf
   pullPolicy: Always
 
 replicaCount: 3
