@@ -236,9 +236,9 @@ $ARGO_IP \
 # Create App
 ############################################
 
-argocd app create paypal-frontend \
+argocd app create frontend-service \
 --repo https://github.com/Madheswaran/Projects.git \
---path devops/paypal-frontend-app/helm/paypal-frontend \
+--path devops/paypal-app/helm/frontend-service \
 --dest-server https://kubernetes.default.svc \
 --dest-namespace default \
 --sync-policy automated \

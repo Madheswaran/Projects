@@ -1,5 +1,5 @@
 image:
-  repository: acrpaypal1784573665.azurecr.io/frontend-service
+  repository: acrpaypal1784605420.azurecr.io/frontend-service
   tag: c2f83bca964690cfb1fb9bc04cfe9566ef4d2af3
   pullPolicy: Always
 
