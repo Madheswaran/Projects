@@ -94,6 +94,7 @@ jobs:
       run: |
         docker build \
           -t $IMAGE_REPO:${{ github.sha }} \
+          -t $IMAGE_REPO:latest \
           ./devops/paypal-app/user-service
 
     - name: Debug Docker Images
@@ -123,6 +124,9 @@ jobs:
       run: |
         docker push \
           $IMAGE_REPO:${{ github.sha }}
+
+        docker push \
+          $IMAGE_REPO:latest
 
     - name: Update Helm values.yaml
       run: |
