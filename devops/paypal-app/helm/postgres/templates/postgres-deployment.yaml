@@ -14,12 +14,15 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:16
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         envFrom:
         - secretRef:
             name: postgres-secret
+        env:
+        - name: PGDATA
+          value: {{ .Values.database.pgdata }}
         ports:
-        - containerPort: 5432
+        - containerPort: {{ .Values.service.port }}
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-storage
@@ -27,3 +30,6 @@ spec:
       - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
+          resources:
+            requests:
+              storage: {{ .Values.storage.size }}
