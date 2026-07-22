@@ -1,18 +1,44 @@
 from flask import Flask,jsonify
 import requests
 import psycopg2
+import os
+
+DB_HOST = os.getenv("DB_HOST","postgres")
+DB_NAME = os.getenv("DB_NAME","paypal")
+DB_USER = os.getenv("DB_USER","admin")
+DB_PASSWORD = os.getenv("DB_PASSWORD","password")
 
 app = Flask(__name__)
 
 @app.route("/users")
 def users():
 
-    return jsonify(
-        [
-            {"id":1,"name":"Ganesha"},
-            {"id":2,"name":"Muruga"}
-        ]
+    conn=get_db_connection()
+    cur=conn.cursor()
+
+    cur.execute(
+        """
+        select id,name
+        from customers
+        """
     )
+
+    rows=cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    result=[]
+
+    for r in rows:
+        result.append(
+            {
+                "id":r[0],
+                "name":r[1]
+            }
+        )
+
+    return jsonify(result)
 
 @app.route("/health")
 def health():
@@ -22,12 +48,13 @@ def health():
 def ready():
     return {"status":"READY"},200
 
-conn = psycopg2.connect(
-    host="postgres",
-    database="paypal",
-    user="admin",
-    password="password"
-)
+def get_db_connection():
+    return psycopg2.connect(
+        host=os.getenv("DB_HOST","postgres"),
+        database=os.getenv("DB_NAME","paypal"),
+        user=os.getenv("DB_USER","admin"),
+        password=os.getenv("DB_PASSWORD","password")
+    )
 
 @app.route("/login",methods=["POST"])
 def login():
@@ -37,6 +64,7 @@ def login():
     email=data["email"]
     password=data["password"]
 
+    conn=get_db_connection()
     cur=conn.cursor()
 
     cur.execute(
@@ -51,6 +79,9 @@ def login():
 
     row=cur.fetchone()
 
+    cur.close()
+    conn.close()
+
     if not row:
         return {"status":"failed"},401
 
@@ -63,6 +94,7 @@ def login():
 @app.route("/profile/<id>")
 def profile(id):
 
+    conn=get_db_connection()
     cur=conn.cursor()
 
     cur.execute(
@@ -76,12 +108,14 @@ def profile(id):
 
     row=cur.fetchone()
 
+    cur.close()
+    conn.close()
+
     return {
         "name":row[1],
         "email":row[2],
         "wallet":float(row[4])
     }
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=3002)
