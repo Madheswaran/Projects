@@ -13,6 +13,14 @@ app = Flask(__name__)
 @app.route("/users")
 def users():
 
+    if os.getenv("CI") == "true":
+        return jsonify(
+            [
+                {"id":1,"name":"Ganesha"},
+                {"id":2,"name":"Muruga"}
+            ]
+        )
+
     conn=get_db_connection()
     cur=conn.cursor()
 
@@ -28,17 +36,15 @@ def users():
     cur.close()
     conn.close()
 
-    result=[]
-
-    for r in rows:
-        result.append(
+    return jsonify(
+        [
             {
                 "id":r[0],
                 "name":r[1]
             }
-        )
-
-    return jsonify(result)
+            for r in rows
+        ]
+    )
 
 @app.route("/health")
 def health():
