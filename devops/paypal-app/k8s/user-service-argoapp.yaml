@@ -1,0 +1,144 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: "2026-07-22T03:59:51Z"
+  generation: 24
+  name: user-service
+  namespace: argocd
+  resourceVersion: "8587"
+  uid: 87be8061-21d5-421d-acca-7f2bd6694ca2
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: devops/paypal-app/helm/user-service
+    repoURL: https://github.com/Madheswaran/Projects.git
+  syncPolicy:
+    automated: {}
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2026-07-22T04:05:35Z"
+    status: Healthy
+  history:
+  - deployStartedAt: "2026-07-22T03:59:51Z"
+    deployedAt: "2026-07-22T03:59:52Z"
+    id: 0
+    initiatedBy:
+      automated: true
+    revision: 2f68d3071321aa51820d8f4a323dc92ac5ebf6ff
+    source:
+      path: devops/paypal-app/helm/user-service
+      repoURL: https://github.com/Madheswaran/Projects.git
+  - deployStartedAt: "2026-07-22T04:01:56Z"
+    deployedAt: "2026-07-22T04:01:57Z"
+    id: 1
+    initiatedBy:
+      automated: true
+    revision: b0c1b69525c72d9b3ba0fc46debe47a6f0e80c04
+    source:
+      path: devops/paypal-app/helm/user-service
+      repoURL: https://github.com/Madheswaran/Projects.git
+  operationState:
+    finishedAt: "2026-07-22T04:01:57Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        revision: b0c1b69525c72d9b3ba0fc46debe47a6f0e80c04
+        source:
+          path: devops/paypal-app/helm/user-service
+          repoURL: https://github.com/Madheswaran/Projects.git
+    phase: Succeeded
+    startedAt: "2026-07-22T04:01:56Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: ConfigMap
+        message: configmap/user-service-config unchanged
+        name: user-service-config
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/user-service unchanged
+        name: user-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        images:
+        - acrpaypal1784691608.azurecr.io/user-service:latest
+        kind: Deployment
+        message: deployment.apps/user-service configured
+        name: user-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: networking.k8s.io
+        hookPhase: Running
+        kind: Ingress
+        message: ingress.networking.k8s.io/user-service-ingress unchanged
+        name: user-service-ingress
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: b0c1b69525c72d9b3ba0fc46debe47a6f0e80c04
+      source:
+        path: devops/paypal-app/helm/user-service
+        repoURL: https://github.com/Madheswaran/Projects.git
+  reconciledAt: "2026-07-22T04:08:43Z"
+  resourceHealthSource: appTree
+  resources:
+  - kind: ConfigMap
+    name: user-service-config
+    namespace: default
+    status: Synced
+    version: v1
+  - kind: Service
+    name: user-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    kind: Deployment
+    name: user-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: networking.k8s.io
+    kind: Ingress
+    name: user-service-ingress
+    namespace: default
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Helm
+  summary:
+    externalURLs:
+    - http://4.255.12.64/users
+    images:
+    - acrpaypal1784691608.azurecr.io/user-service:latest
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        path: devops/paypal-app/helm/user-service
+        repoURL: https://github.com/Madheswaran/Projects.git
+    revision: b0c1b69525c72d9b3ba0fc46debe47a6f0e80c04
+    status: Synced
