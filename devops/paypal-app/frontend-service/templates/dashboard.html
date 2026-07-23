@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>PayPal Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body class="dashboard-page">
+
+<header>
+
+<h2>PayPal Checkout</h2>
+
+<a href="/logout">Logout</a>
+
+</header>
+
+<div class="container">
+
+<div class="customer-card">
+
+<h2>Hello {{ customer.name }}</h2>
+
+<p><b>Email</b></p>
+
+<p>madhes@gmail.com</p>
+
+<p><b>Wallet Balance</b></p>
+
+<h1>₹ {{ customer.wallet }}</h1>
+
+</div>
+
+<div class="payment-card">
+
+<h2>Shopping Summary</h2>
+
+<hr>
+
+<div class="row">
+
+<span>Shopping Cart</span>
+
+<span>₹320</span>
+
+</div>
+
+<div class="row">
+
+<span>Shipping</span>
+
+<span>₹30</span>
+
+</div>
+
+<div class="row">
+
+<span>Discount</span>
+
+<span>-₹50</span>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+<b>Total</b>
+
+<b>₹300</b>
+
+</div>
+
+<br>
+
+<button>
+
+Pay Now
+
+</button>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
