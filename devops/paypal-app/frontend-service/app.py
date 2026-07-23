@@ -1,4 +1,5 @@
 from flask import Flask, render_template_string
+from flask import request
 #from app import app
 #import subprocess
 import os
@@ -13,9 +14,11 @@ app = Flask(__name__)
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>PayPal frontend Service</title>
+    <title>PayPal Frontend Service</title>
 </head>
+
 <body>
 
 <h1>{{ APP_NAME }}</h1>
@@ -24,29 +27,40 @@ HOME_PAGE = """
 
 <h3>Welcome</h3>
 
-<form>
+<form method="POST" action="/login">
 
-Email
-
-<br>
-
-<input type="text">
-
-<br><br>
-
-Password
+<label>Email</label>
 
 <br>
 
-<input type="password">
+<input
+    type="email"
+    name="email"
+    placeholder="Enter Email"
+    required>
 
 <br><br>
 
-<button>Login</button>
+<label>Password</label>
+
+<br>
+
+<input
+    type="password"
+    name="password"
+    placeholder="Enter Password"
+    required>
+
+<br><br>
+
+<button type="submit">
+    Login
+</button>
 
 </form>
 
 </body>
+
 </html>
 """
 
