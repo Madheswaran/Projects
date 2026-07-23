@@ -64,6 +64,43 @@ HOME_PAGE = """
 </html>
 """
 
+@app.route("/login", methods=["POST"])
+def login():
+
+    email = request.form["email"]
+    password = request.form["password"]
+
+    response = requests.post(
+        "http://user-service/login",
+        json={
+            "email": email,
+            "password": password
+        }
+    )
+
+    if response.status_code != 200:
+        return """
+        <h2>Login Failed</h2>
+
+        <a href="/">
+            Try Again
+        </a>
+        """
+
+    user = response.json()
+
+    return f"""
+    <h1>Welcome {user['name']}</h1>
+
+    <h2>Wallet Balance : ₹ {user['wallet']}</h2>
+
+    <br>
+
+    <a href="/">
+        Logout
+    </a>
+    """
+
 @app.route("/")
 def home():
     
