@@ -31,6 +31,3 @@ spec:
       - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
-          resources:
-            requests:
-              storage: {{ .Values.storage.size }}
