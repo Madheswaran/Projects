@@ -10,11 +10,9 @@ USER_SERVICE = "http://user-service"
 APP_NAME = os.getenv("APP_NAME", "PayPal Checkout")
 ENV_NAME = os.getenv("ENV_NAME", "DEV")
 
-
 @app.route("/")
 def home():
     return redirect("/login")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -88,11 +86,9 @@ def login():
     </html>
     """
 
-
 @app.route("/logout")
 def logout():
     return redirect("/login")
-
 
 @app.route("/users")
 def users():
@@ -100,48 +96,6 @@ def users():
     response = requests.get(f"{USER_SERVICE}/users")
 
     return jsonify(response.json())
-
-
-@app.route("/profile/<customer_id>")
-def profile(customer_id):
-
-    response = requests.get(
-        f"{USER_SERVICE}/profile/{customer_id}"
-    )
-
-    return jsonify(response.json())
-
-
-@app.route("/wallet/<customer_id>")
-def wallet(customer_id):
-
-    response = requests.get(
-        f"{USER_SERVICE}/wallet/{customer_id}"
-    )
-
-    return jsonify(response.json())
-
-
-@app.route("/transactions/<customer_id>")
-def transactions(customer_id):
-
-    response = requests.get(
-        f"{USER_SERVICE}/transactions/{customer_id}"
-    )
-
-    return jsonify(response.json())
-
-
-@app.route("/pay", methods=["POST"])
-def pay():
-
-    response = requests.post(
-        f"{USER_SERVICE}/pay",
-        json=request.json
-    )
-
-    return jsonify(response.json()), response.status_code
-
 
 @app.route("/health")
 def health():
