@@ -1,5 +1,5 @@
 image:
-  repository: acrpaypal1784828525.azurecr.io/user-service
+  repository: acrpaypal1784866415.azurecr.io/user-service
   tag: latest
   pullPolicy: Always
 
