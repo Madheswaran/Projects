@@ -33,9 +33,10 @@ def home():
 # ----------------------------------
 # Login
 # ----------------------------------
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
+    print("METHOD =", request.method)
 
     if request.method == "GET":
         return render_template(
@@ -44,8 +45,12 @@ def login():
             ENV_NAME=ENV_NAME
         )
 
+    print("POST RECEIVED")
+
     email = request.form["email"]
     password = request.form["password"]
+
+    print(email, password)
 
     response = requests.post(
         f"{USER_SERVICE}/login",
@@ -55,8 +60,10 @@ def login():
         }
     )
 
-    if response.status_code != 200:
+    print("User service status =", response.status_code)
 
+    if response.status_code != 200:
+        print(response.text)
         return render_template(
             "login.html",
             APP_NAME=APP_NAME,
@@ -66,12 +73,12 @@ def login():
 
     customer = response.json()
 
+    print(customer)
+
     return render_template(
         "dashboard.html",
-        APP_NAME=APP_NAME,
         customer=customer
     )
-
 
 # ----------------------------------
 # Logout
