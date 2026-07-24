@@ -27,7 +27,7 @@ spec:
         - mountPath: /var/lib/postgresql/data
           name: postgres-storage
         - mountPath: /docker-entrypoint-initdb.d
-          name: postgres-initdb
+          name: initdb
           
       volumes:
       - name: postgres-storage
@@ -36,6 +36,6 @@ spec:
           resources:
             requests:
               storage: {{ .Values.storage.size }}
-      - name: postgres-initdb
+      - name: initdb
         configMap:
           name: postgres-initdb
