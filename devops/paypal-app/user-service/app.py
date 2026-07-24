@@ -15,11 +15,12 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 # ---------------------------------------------------------
 
 def get_db_connection():
+
     return psycopg2.connect(
-        host="postgres",
-        database=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD")
+        host=DB_HOST,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD
     )
 
 # ---------------------------------------------------------
