@@ -25,7 +25,7 @@ def test_users():
 
     data = response.get_json() 
 
-    assert len(data) == 2 
+    assert len(data) == 3 
 
     assert data[0]['name'] == 'Ganesha'
 
