@@ -50,20 +50,35 @@ def login():
     email = request.form["email"]
     password = request.form["password"]
 
-    app.logger.warning(f"EMAIL={email}")
+    app.logger.warning(f"EMAIL = {email}")
+    app.logger.warning(f"USER_SERVICE = {USER_SERVICE}")
 
-    response = requests.post(
-        f"{USER_SERVICE}/login",
-        json={
-            "email": email,
-            "password": password
-        }
-    )
+    try:
 
-    print("User service status =", response.status_code)
+        response = requests.post(
+            f"{USER_SERVICE}/login",
+            json={
+                "email": email,
+                "password": password
+            },
+            timeout=10
+        )
+
+        app.logger.warning(f"Response Status = {response.status_code}")
+        app.logger.warning(f"Response Body = {response.text}")
+
+    except Exception as e:
+
+        app.logger.exception("Failed to call user-service")
+        return render_template(
+            "login.html",
+            APP_NAME=APP_NAME,
+            ENV_NAME=ENV_NAME,
+            error=str(e)
+        )
 
     if response.status_code != 200:
-        print(response.text)
+
         return render_template(
             "login.html",
             APP_NAME=APP_NAME,
@@ -73,13 +88,12 @@ def login():
 
     customer = response.json()
 
-    print(customer)
+    app.logger.warning(f"Customer = {customer}")
 
     return render_template(
         "dashboard.html",
         customer=customer
     )
-
 # ----------------------------------
 # Logout
 # ----------------------------------

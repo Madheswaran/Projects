@@ -78,44 +78,52 @@ def users():
 # ---------------------------------------------------------
 # Login
 # ---------------------------------------------------------
+# ---------------------------------------------------------
+# Login
+# ---------------------------------------------------------
 
 @app.route("/login", methods=["POST"])
 def login():
 
-    data = request.get_json()
+    app.logger.warning("========== USER LOGIN ==========")
 
-    if not data:
-        return {"status": "failed"}, 400
-
-    email = data.get("email")
-    password = data.get("password")
-
-    if not email or not password:
-        return {"status": "failed"}, 400
+    data = request.json
+    app.logger.warning(f"Request Data : {data}")
 
     conn = get_db_connection()
     cur = conn.cursor()
 
+    app.logger.warning("Connected to PostgreSQL")
+
     cur.execute("""
         SELECT id, name, wallet
         FROM customers
-        WHERE email = %s
-          AND password = %s
-    """, (email, password))
+        WHERE email=%s
+        AND password=%s
+    """,
+    (
+        data["email"],
+        data["password"]
+    ))
 
     row = cur.fetchone()
+
+    app.logger.warning(f"Database Result : {row}")
 
     cur.close()
     conn.close()
 
     if row is None:
+        app.logger.warning("LOGIN FAILED")
         return {"status": "failed"}, 401
+
+    app.logger.warning("LOGIN SUCCESS")
 
     return {
         "id": row[0],
         "name": row[1],
         "wallet": float(row[2])
-    }, 200
+    }
 # ---------------------------------------------------------
 # Profile
 # ---------------------------------------------------------
