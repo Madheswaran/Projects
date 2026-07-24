@@ -36,7 +36,7 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    print("METHOD =", request.method)
+    app.logger.warning(f"LOGIN METHOD = {request.method}")
 
     if request.method == "GET":
         return render_template(
@@ -45,12 +45,12 @@ def login():
             ENV_NAME=ENV_NAME
         )
 
-    print("POST RECEIVED")
+    app.logger.warning("POST /login RECEIVED")
 
     email = request.form["email"]
     password = request.form["password"]
 
-    print(email, password)
+    app.logger.warning(f"EMAIL={email}")
 
     response = requests.post(
         f"{USER_SERVICE}/login",
