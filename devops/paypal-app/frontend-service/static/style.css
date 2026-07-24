@@ -1,0 +1,182 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-image: url("/static/bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    min-height: 100vh;
+}
+
+
+/* ---------------- Login ---------------- */
+
+.login-container {
+
+    width: 380px;
+
+    margin: 100px auto;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+
+}
+
+.login-container h1 {
+
+    text-align: center;
+
+    color: #003087;
+
+    margin-bottom: 10px;
+
+}
+
+.environment {
+
+    text-align: center;
+
+    color: gray;
+
+    margin-bottom: 25px;
+
+}
+
+.login-container label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    font-weight: bold;
+
+}
+
+.login-container input {
+
+    width: 100%;
+
+    padding: 10px;
+
+    margin-top: 5px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    box-sizing: border-box;
+
+}
+
+.login-container button {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 12px;
+
+    background: #0070ba;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+.login-container button:hover {
+
+    background: #005ea6;
+
+}
+
+.error {
+
+    color: red;
+
+    text-align: center;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* ---------------- Dashboard ---------------- */
+
+.dashboard-container {
+
+    width: 650px;
+
+    margin: 60px auto;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+
+}
+
+.dashboard-container h1 {
+
+    color: #003087;
+
+}
+
+.card {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    background: #fafafa;
+
+}
+
+.card p {
+
+    margin: 8px 0;
+
+}
+
+.logout-btn {
+
+    display: inline-block;
+
+    padding: 12px 25px;
+
+    background: #d9534f;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+}
+
+.logout-btn:hover {
+
+    background: #c9302c;
+
+}

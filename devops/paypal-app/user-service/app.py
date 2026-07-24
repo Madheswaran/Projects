@@ -16,55 +16,11 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 
 def get_db_connection():
     return psycopg2.connect(
-        host=DB_HOST,
-        database=DB_NAME,
-        user=DB_USER,
-        password=DB_PASSWORD
+        host="postgres",
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD")
     )
-
-
-# ---------------------------------------------------------
-# Create Database Objects
-# ---------------------------------------------------------
-
-def initialize_database():
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS customers
-        (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(100),
-            email VARCHAR(100) UNIQUE,
-            password VARCHAR(100),
-            wallet NUMERIC(10,2)
-        )
-    """)
-
-    cur.execute("SELECT COUNT(*) FROM customers")
-
-    count = cur.fetchone()[0]
-
-    if count == 0:
-
-        cur.execute("""
-            INSERT INTO customers
-            (name,email,password,wallet)
-            VALUES
-            ('Ganesha','ganesha@gmail.com','paypal123',5000),
-            ('Muruga','muruga@gmail.com','paypal123',12000),
-            ('Lakshmi','lakshmi@gmail.com','paypal123',25000)
-        """)
-
-    conn.commit()
-
-    cur.close()
-    conn.close()
-
-    print("Database initialized.")
-
 
 # ---------------------------------------------------------
 # Health
@@ -119,25 +75,33 @@ def users():
 # ---------------------------------------------------------
 # Login
 # ---------------------------------------------------------
+# ---------------------------------------------------------
+# Login
+# ---------------------------------------------------------
 
 @app.route("/login", methods=["POST"])
 def login():
 
-    data = request.json
+    data = request.get_json()
+
+    if not data:
+        return {"status": "failed"}, 400
+
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return {"status": "failed"}, 400
 
     conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id,name,wallet
+        SELECT id, name, wallet
         FROM customers
-        WHERE email=%s
-        AND password=%s
-    """,
-    (
-        data["email"],
-        data["password"]
-    ))
+        WHERE email = %s
+          AND password = %s
+    """, (email, password))
 
     row = cur.fetchone()
 
@@ -151,9 +115,7 @@ def login():
         "id": row[0],
         "name": row[1],
         "wallet": float(row[2])
-    }
-
-
+    }, 200
 # ---------------------------------------------------------
 # Profile
 # ---------------------------------------------------------
@@ -191,7 +153,6 @@ def profile(id):
 # Start Application
 # ---------------------------------------------------------
 if __name__ == "__main__":
-    initialize_database()
 
     app.run(
         host="0.0.0.0",

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{{ APP_NAME }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial,Helvetica,sans-serif;
+            background:#f4f6f9;
+        }
+
+        .topbar{
+            background:#003087;
+            color:white;
+            padding:18px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .topbar a{
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .container{
+            width:900px;
+            margin:40px auto;
+        }
+
+        .card{
+            background:white;
+            border-radius:10px;
+            box-shadow:0 3px 10px rgba(0,0,0,.12);
+            padding:25px;
+            margin-bottom:25px;
+        }
+
+        h2{
+            margin-top:0;
+        }
+
+        .balance{
+            color:#0070ba;
+            font-size:42px;
+            font-weight:bold;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            background:#003087;
+            color:white;
+            padding:12px;
+        }
+
+        td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <h2>{{ APP_NAME }}</h2>
+
+    <a href="/logout">Logout</a>
+
+</div>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Welcome</h2>
+
+        <p><strong>Name:</strong> {{ customer.name }}</p>
+
+        <p><strong>Email:</strong> {{ customer.email }}</p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Wallet Balance</h2>
+
+        <div class="balance">
+            ₹ {{ customer.balance }}
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Recent Transactions</h2>
+
+        {% if customer.transactions %}
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Amount</th>
+            </tr>
+
+            {% for txn in customer.transactions %}
+
+            <tr>
+                <td>{{ txn.id }}</td>
+                <td>{{ txn.description }}</td>
+                <td>₹ {{ txn.amount }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <p>No recent transactions.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
