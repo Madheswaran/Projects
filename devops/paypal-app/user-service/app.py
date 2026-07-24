@@ -76,12 +76,6 @@ def users():
 # ---------------------------------------------------------
 # Login
 # ---------------------------------------------------------
-# ---------------------------------------------------------
-# Login
-# ---------------------------------------------------------
-# ---------------------------------------------------------
-# Login
-# ---------------------------------------------------------
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -97,7 +91,7 @@ def login():
     app.logger.warning("Connected to PostgreSQL")
 
     cur.execute("""
-        SELECT id, name, wallet
+        SELECT id, name, email, wallet
         FROM customers
         WHERE email=%s
         AND password=%s
@@ -123,7 +117,8 @@ def login():
     return {
         "id": row[0],
         "name": row[1],
-        "wallet": float(row[2])
+        "email": row[2],
+        "wallet": float(row[3])
     }
 # ---------------------------------------------------------
 # Profile
