@@ -1,19 +1,9 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    jsonify
-)
+from flask import Flask, request, redirect, jsonify
 
 import os
 import requests
 
 app = Flask(__name__)
-
-# -------------------------------
-# Configuration
-# -------------------------------
 
 USER_SERVICE = "http://user-service"
 
@@ -21,28 +11,42 @@ APP_NAME = os.getenv("APP_NAME", "PayPal Checkout")
 ENV_NAME = os.getenv("ENV_NAME", "DEV")
 
 
-# -------------------------------
-# Home
-# -------------------------------
-
 @app.route("/")
 def home():
     return redirect("/login")
 
 
-# -------------------------------
-# Login
-# -------------------------------
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "GET":
-        return render_template(
-            "login.html",
-            APP_NAME=APP_NAME,
-            ENV_NAME=ENV_NAME
-        )
+
+        return f"""
+        <html>
+        <head>
+            <title>{APP_NAME}</title>
+        </head>
+
+        <body>
+
+        <h1>{APP_NAME}</h1>
+        <h3>{ENV_NAME}</h3>
+
+        <form method="POST">
+
+            <label>Email</label><br>
+            <input type="text" name="email"><br><br>
+
+            <label>Password</label><br>
+            <input type="password" name="password"><br><br>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        </body>
+        </html>
+        """
 
     email = request.form["email"]
     password = request.form["password"]
@@ -57,40 +61,43 @@ def login():
 
     if response.status_code != 200:
 
-        return render_template(
-            "login.html",
-            APP_NAME=APP_NAME,
-            ENV_NAME=ENV_NAME,
-            error="Invalid Email or Password"
-        )
+        return """
+        <h2>Login Failed</h2>
+        <a href="/login">Try Again</a>
+        """
 
     customer = response.json()
 
-    return render_template(
-        "dashboard.html",
-        customer=customer
-    )
+    return f"""
+    <html>
 
+    <body>
 
-# -------------------------------
-# Logout
-# -------------------------------
+    <h1>Welcome {customer["name"]}</h1>
+
+    <p>Customer ID : {customer["id"]}</p>
+
+    <p>Wallet : ${customer["wallet"]}</p>
+
+    <br>
+
+    <a href="/logout">Logout</a>
+
+    </body>
+
+    </html>
+    """
+
 
 @app.route("/logout")
 def logout():
     return redirect("/login")
 
 
-# ===================================================
-# User Service APIs
-# ===================================================
-
 @app.route("/users")
 def users():
 
-    response = requests.get(
-        f"{USER_SERVICE}/users"
-    )
+    response = requests.get(f"{USER_SERVICE}/users")
 
     return jsonify(response.json())
 
@@ -136,27 +143,15 @@ def pay():
     return jsonify(response.json()), response.status_code
 
 
-# -------------------------------
-# Health Check
-# -------------------------------
-
 @app.route("/health")
 def health():
     return {"status": "UP"}, 200
 
 
-# -------------------------------
-# Readiness Probe
-# -------------------------------
-
 @app.route("/ready")
 def ready():
     return {"status": "READY"}, 200
 
-
-# -------------------------------
-# Application Entry
-# -------------------------------
 
 if __name__ == "__main__":
     app.run(

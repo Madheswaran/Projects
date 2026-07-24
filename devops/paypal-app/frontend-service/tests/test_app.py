@@ -1,18 +1,14 @@
 import sys
 import os
-import requests
 
 sys.path.append(
     os.path.abspath(
         os.path.join(
             os.path.dirname(__file__),
-            '..'
+            ".."
         )
     )
 )
-
-os.environ["API_KEY"] = "test-api-key"
-os.environ["DB_PASSWORD"] = "test-password"
 
 from app import app
 
