@@ -6,6 +6,9 @@ ADD COLUMN IF NOT EXISTS phone VARCHAR(20);
 ALTER TABLE customers
 ADD COLUMN IF NOT EXISTS address TEXT;
 
+ALTER TABLE customers
+ADD COLUMN IF NOT EXISTS city VARCHAR(100);
+
 ------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS transactions

@@ -1,7 +1,7 @@
 image:
   repository: acrpaypal1785000925.azurecr.io/user-service
   tag: latest
-  pullPolicy: Always
+  pullPolicy: Always 
 
 replicaCount: 1
 
