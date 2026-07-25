@@ -90,11 +90,28 @@ def login():
 
     app.logger.warning("Connected to PostgreSQL")
 
-    cur.execute("""
-        SELECT id, name, email, wallet
-        FROM customers
-        WHERE email=%s
-        AND password=%s
+    cursor.execute("""
+
+    SELECT
+
+    id,
+
+    name,
+
+    email,
+
+    wallet,
+
+    phone,
+
+    address
+
+    FROM customers
+
+    WHERE email=%s
+
+    AND password=%s
+
     """,
     (
         data["email"],
@@ -114,12 +131,21 @@ def login():
 
     app.logger.warning("LOGIN SUCCESS")
 
-    return {
-        "id": row[0],
-        "name": row[1],
-        "email": row[2],
-        "wallet": float(row[3])
-    }
+    return jsonify({
+
+    "id":customer[0],
+
+    "name":customer[1],
+
+    "email":customer[2],
+
+    "wallet":float(customer[3]),
+
+    "phone":customer[4],
+
+    "address":customer[5]
+
+    })
 # ---------------------------------------------------------
 # Profile
 # ---------------------------------------------------------

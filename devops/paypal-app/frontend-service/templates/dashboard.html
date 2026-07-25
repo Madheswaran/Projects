@@ -1,192 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
-    <meta charset="UTF-8">
+    <title>{{ APP_NAME }}</title>
 
-    <title>PayPal Dashboard</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 <body>
 
-<div class="navbar">
+<div class="topbar">
 
     <div class="logo">
-        PayPal
+        {{ APP_NAME }}
     </div>
 
-    <div class="nav-right">
-
-        <button class="icon-btn">
-            🔔 Notifications
-        </button>
-
-        <a href="/logout" class="logout-btn">
-            Logout
-        </a>
-
-    </div>
+    <a href="/logout" class="logout-btn">
+        Logout
+    </a>
 
 </div>
 
-
 <div class="container">
 
+    <!-- Left Section -->
 
-    <div class="dashboard-grid">
+    <div class="left-panel">
 
+        <div class="card">
 
-        <div class="profile-card">
-
-            <h2>
-                Welcome {{ customer.name }}
-            </h2>
+            <h2>Welcome {{ customer.name }}</h2>
 
             <hr>
 
-            <p>
+            <p><strong>Name</strong></p>
+            <p>{{ customer.name }}</p>
 
-                <strong>Email</strong><br>
+            <p><strong>Email</strong></p>
+            <p>{{ customer.email }}</p>
 
-                {{ customer.email }}
+            <p><strong>Phone</strong></p>
+            <p>{{ customer.phone }}</p>
 
-            </p>
-
-            <p>
-
-                <strong>Wallet Balance</strong><br>
-
-                ₹5,000
-
-            </p>
-
-            <p>
-
-                <strong>Last Login</strong><br>
-
-                Today 10:30 AM
-
-            </p>
-
-            <p>
-
-                <strong>Status</strong><br>
-
-                Active
-
-            </p>
+            <p><strong>Address</strong></p>
+            <p>{{ customer.address }}</p>
 
         </div>
 
+        <div class="card">
 
+            <h2>Recent Transactions</h2>
 
-        <div class="action-card">
+            {% if customer.transactions %}
 
-            <h2>
+            <table>
 
-                Quick Actions
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
 
-            </h2>
+                {% for txn in customer.transactions %}
 
-            <hr>
+                <tr>
+                    <td>{{ txn.id }}</td>
+                    <td>{{ txn.description }}</td>
+                    <td>₹ {{ txn.amount }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <p>No recent transactions.</p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Right Section -->
+
+    <div class="right-panel">
+
+        <div class="card">
+
+            <h2>Wallet Balance</h2>
+
+            <div class="wallet">
+
+                ₹ {{ customer.wallet }}
+
+            </div>
 
             <a href="/pay" class="action-btn">
-                💳 Pay Now
+                Pay Now
             </a>
 
-            <button class="action-btn">
-                💰 Add Money
-            </button>
+            <a href="/add-money" class="action-btn">
+                Add Money
+            </a>
 
-            <button class="action-btn">
-                📜 Transaction History
-            </button>
+            <a href="/profile" class="action-btn">
+                Profile
+            </a>
 
         </div>
 
     </div>
-
-
-
-    <div class="transactions">
-
-        <h2>
-
-            Recent Transactions
-
-        </h2>
-
-        <table>
-
-            <tr>
-
-                <th>Merchant</th>
-
-                <th>Amount</th>
-
-                <th>Status</th>
-
-            </tr>
-
-            <tr>
-
-                <td>Amazon</td>
-
-                <td>-₹500</td>
-
-                <td class="success">
-                    Success
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>Swiggy</td>
-
-                <td>-₹220</td>
-
-                <td class="success">
-                    Success
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>Salary</td>
-
-                <td class="credit">
-                    +₹65,000
-                </td>
-
-                <td class="credit">
-                    Credit
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>Electricity</td>
-
-                <td>-₹1,800</td>
-
-                <td class="success">
-                    Success
-                </td>
-
-            </tr>
-
-        </table>
-
-    </div>
-
 
 </div>
 

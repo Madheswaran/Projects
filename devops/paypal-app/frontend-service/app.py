@@ -99,13 +99,13 @@ def login():
 # Pay Now
 # ----------------------------------
 
-@app.route("/pay")
-def pay():
+# @app.route("/pay")
+# def pay():
 
-    return render_template(
-        "pay.html"
-    )
-    
+#     return render_template(
+#         "pay.html"
+#     )
+
 # ----------------------------------
 # Logout
 # ----------------------------------
@@ -147,6 +147,22 @@ def ready():
     return {"status": "READY"}, 200
 
 
+@app.route("/pay")
+def pay():
+
+    return "<h2>Pay Feature Coming Soon</h2>"
+
+
+@app.route("/add-money")
+def add_money():
+
+    return "<h2>Add Money Coming Soon</h2>"
+
+
+@app.route("/profile")
+def profile():
+
+    return "<h2>Profile Coming Soon</h2>"
 # ----------------------------------
 # Main
 # ----------------------------------
