@@ -126,14 +126,35 @@ def login():
 # ---------------------------------------------------
 # Pay
 # ---------------------------------------------------
-
-@app.route("/pay")
+@app.route("/pay", methods=["GET", "POST"])
 def pay():
 
-    return """
-    <h2>Pay Money</h2>
-    <p>This feature will be implemented in the Payment Service.</p>
-    <a href="/login">Home</a>
+    if request.method == "GET":
+
+        return render_template(
+            "pay.html",
+            APP_NAME=APP_NAME
+        )
+
+    receiver = request.form["receiver"]
+    amount = request.form["amount"]
+
+    app.logger.warning(
+        f"PAY REQUEST -> {receiver} : {amount}"
+    )
+
+    #
+    # Tomorrow we'll call user-service here.
+    #
+
+    return f"""
+    <h2>Payment Successful</h2>
+
+    Receiver : {receiver}<br>
+
+    Amount : ₹ {amount}<br><br>
+
+    <a href="/login">Back</a>
     """
 
 

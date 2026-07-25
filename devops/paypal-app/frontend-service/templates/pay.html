@@ -1,97 +1,72 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
     <title>Pay Now</title>
 
-    <link
-    rel="stylesheet"
-    href="{{ url_for('static',filename='style.css') }}">
+    <link rel="stylesheet"
+          href="/static/style.css">
 
 </head>
 
 <body>
 
-<div class="navbar">
+<div class="topbar">
 
     <div class="logo">
-        PayPal
+        {{ APP_NAME }}
     </div>
 
-    <div class="nav-right">
+    <a href="/logout"
+       class="logout-btn">
 
-        <a href="/" class="icon-btn">
-            Dashboard
-        </a>
+       Logout
 
-        <a href="/logout"
-           class="logout-btn">
-
-            Logout
-
-        </a>
-
-    </div>
+    </a>
 
 </div>
 
+<div class="container">
 
-<div class="payment-card">
+<div class="card" style="width:600px;margin:auto;">
 
-<h2>
+<h2>Send Payment</h2>
 
-Send Money
+<form method="POST">
 
-</h2>
-
-<label>
-
-Recipient Email
-
-</label>
+<label>Receiver Email</label>
 
 <input
 type="email"
-placeholder="receiver@email.com">
+name="receiver"
+placeholder="receiver@gmail.com"
+required>
 
+<br><br>
 
-<label>
-
-Amount
-
-</label>
+<label>Amount</label>
 
 <input
 type="number"
-placeholder="100">
+step="0.01"
+name="amount"
+required>
 
+<br><br>
 
-<label>
+<button
+class="action-btn"
+type="submit">
 
-Description
-
-</label>
-
-<textarea
-rows="4"
-placeholder="Description"></textarea>
-
-
-<button class="pay-btn">
-
-Send Payment
+Pay Now
 
 </button>
 
+</form>
 
-<a
-href="/"
-class="cancel-btn">
-
-Cancel
-
-</a>
+</div>
 
 </div>
 
