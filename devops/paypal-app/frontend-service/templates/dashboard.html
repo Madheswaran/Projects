@@ -38,23 +38,34 @@
 
             <hr>
 
-            <p><strong>Name</strong></p>
+            <table class="profile-table">
 
-            <p>{{ customer.name }}</p>
+            <tr>
+                <td>Name</td>
+                <td>{{ customer.name }}</td>
+            </tr>
 
-            <p><strong>Email</strong></p>
+            <tr>
+                <td>Email</td>
+                <td>{{ customer.email }}</td>
+            </tr>
 
-            <p>{{ customer.email }}</p>
+            <tr>
+                <td>Customer ID</td>
+                <td>{{ customer.id }}</td>
+            </tr>
 
-            <p><strong>Customer ID</strong></p>
+            <tr>
+                <td>Phone</td>
+                <td>{{ customer.phone }}</td>
+            </tr>
 
-            <p>{{ customer.id }}</p>
+            <tr>
+                <td>Address</td>
+                <td>{{ customer.address }}</td>
+            </tr>
 
-            <p><strong>Phone</strong></p>
-            <p>{{ customer.phone }}</p>
-
-            <p><strong>Address</strong></p>
-            <p>{{ customer.address }}</p>
+            </table>
 
         </div>
 
