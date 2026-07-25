@@ -1,152 +1,150 @@
-body{
+/* ===================================================
+   GLOBAL
+=================================================== */
 
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-
-}
-
-/*=====================================================
-LOGIN PAGE
-=====================================================*/
-
-/* ===========================================
-   LOGIN PAGE
-=========================================== */
-
-body{
-
+*{
     margin:0;
     padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
     font-family:Arial,Helvetica,sans-serif;
 
-    background-image:url("/static/bg.png");
+    background:
+        linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+        url("/static/images/bg.jpg");
+
     background-size:cover;
     background-position:center;
-    background-repeat:no-repeat;
+    background-attachment:fixed;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    height:100vh;
 }
 
-/* Dark overlay */
 
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    left:0;
-    top:0;
-
-    width:100%;
-    height:100%;
-
-    background:rgba(0,0,0,.45);
-
-    z-index:0;
-}
-
-/* Login Box */
+/* ===================================================
+   LOGIN PAGE
+=================================================== */
 
 .login-container{
 
-    position:relative;
-    z-index:1;
+    width:430px;
 
-    width:600px;
+    margin:80px auto;
 
-    padding:45px;
+    padding:35px;
 
-    background:rgba(25,25,25,.95);
+    background:rgba(25,25,25,.92);
 
     border-radius:18px;
 
-    box-shadow:0 20px 45px rgba(0,0,0,.55);
+    box-shadow:0 15px 45px rgba(0,0,0,.45);
 
     color:white;
+
 }
 
 .login-container h1{
 
     text-align:center;
 
-    margin-top:0;
+    font-size:34px;
 
-    font-size:60px;
+    margin-bottom:15px;
+
 }
 
 .environment{
 
     text-align:center;
 
-    font-size:22px;
+    color:#dddddd;
 
-    color:#d5d5d5;
+    font-size:18px;
 
-    margin-bottom:40px;
+    margin-bottom:30px;
+
 }
 
 .login-container label{
 
     display:block;
 
-    margin-top:25px;
+    margin-top:18px;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
 
-    font-size:18px;
+    font-size:16px;
 
     font-weight:bold;
+
 }
 
 .login-container input{
 
     width:100%;
 
-    padding:18px;
-
-    border-radius:8px;
+    padding:13px;
 
     border:none;
 
-    font-size:22px;
+    border-radius:8px;
 
-    box-sizing:border-box;
+    font-size:16px;
+
 }
 
 .login-container button{
 
     width:100%;
 
-    margin-top:35px;
+    margin-top:28px;
 
-    padding:18px;
-
-    background:#0070ba;
-
-    color:white;
+    padding:14px;
 
     border:none;
 
     border-radius:8px;
 
-    font-size:24px;
+    background:#0070ba;
+
+    color:white;
+
+    font-size:22px;
 
     font-weight:bold;
 
     cursor:pointer;
+
 }
 
 .login-container button:hover{
 
     background:#005ea6;
+
 }
 
-/*================ DASHBOARD ================*/
+.error{
+
+    background:#ffdddd;
+
+    color:#a10000;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    margin-top:20px;
+
+    margin-bottom:15px;
+
+}
+
+
+/* ===================================================
+   DASHBOARD
+=================================================== */
 
 .topbar{
 
@@ -154,7 +152,7 @@ body::before{
 
     color:white;
 
-    padding:18px 35px;
+    padding:18px 30px;
 
     display:flex;
 
@@ -166,7 +164,7 @@ body::before{
 
 .logo{
 
-    font-size:26px;
+    font-size:30px;
 
     font-weight:bold;
 
@@ -176,25 +174,32 @@ body::before{
 
     color:white;
 
-    text-decoration:none;
-
     background:#0070ba;
 
-    padding:10px 20px;
+    padding:10px 18px;
 
-    border-radius:6px;
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:bold;
 
 }
 
+
+/* ===================================================
+   LAYOUT
+=================================================== */
+
 .container{
 
-    width:1200px;
+    width:1050px;
 
-    margin:35px auto;
+    margin:30px auto;
 
     display:flex;
 
-    gap:30px;
+    gap:22px;
 
 }
 
@@ -206,47 +211,84 @@ body::before{
 
 .right-panel{
 
-    width:330px;
+    width:300px;
 
 }
 
+
+/* ===================================================
+   CARDS
+=================================================== */
+
 .card{
 
-    background:white;
+    background:rgba(255,255,255,.96);
 
-    border-radius:10px;
+    border-radius:14px;
 
-    padding:25px;
+    padding:18px;
 
-    margin-bottom:25px;
+    margin-bottom:22px;
 
-    box-shadow:0 3px 12px rgba(0,0,0,.15);
+    box-shadow:0 5px 18px rgba(0,0,0,.18);
 
 }
 
 .card h2{
 
-    margin-top:0;
+    margin-bottom:12px;
+
+    font-size:28px;
 
 }
+
+.card hr{
+
+    margin:12px 0 18px;
+
+    border:none;
+
+    border-top:1px solid #ddd;
+
+}
+
+.card p{
+
+    margin:6px 0;
+
+    font-size:17px;
+
+}
+
+
+/* ===================================================
+   WALLET
+=================================================== */
 
 .wallet{
 
-    font-size:40px;
+    text-align:center;
 
     color:#0070ba;
 
+    font-size:34px;
+
     font-weight:bold;
 
-    text-align:center;
-
-    margin:25px 0;
+    margin:15px 0;
 
 }
+
+
+/* ===================================================
+   BUTTONS
+=================================================== */
 
 .action-btn{
 
     display:block;
+
+    text-align:center;
 
     text-decoration:none;
 
@@ -254,13 +296,17 @@ body::before{
 
     color:white;
 
-    text-align:center;
-
-    padding:15px;
-
-    margin-top:15px;
+    padding:12px;
 
     border-radius:8px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-top:12px;
+
+    transition:.25s;
 
 }
 
@@ -270,13 +316,16 @@ body::before{
 
 }
 
+
+/* ===================================================
+   TABLE
+=================================================== */
+
 table{
 
     width:100%;
 
     border-collapse:collapse;
-
-    margin-top:15px;
 
 }
 
@@ -286,50 +335,47 @@ th{
 
     color:white;
 
-    padding:12px;
+    padding:10px;
+
+    font-size:17px;
 
 }
 
 td{
 
-    padding:12px;
+    padding:10px;
+
+    font-size:16px;
 
     border-bottom:1px solid #ddd;
 
 }
 
-hr{
 
-    border:none;
+/* ===================================================
+   RESPONSIVE
+=================================================== */
 
-    border-top:1px solid #ddd;
+@media(max-width:1100px){
 
-    margin:20px 0;
+.container{
+
+    width:95%;
+
+    flex-direction:column;
 
 }
 
-input{
+.right-panel{
 
     width:100%;
 
-    padding:12px;
-
-    border-radius:6px;
-
-    border:1px solid #ccc;
-
-    font-size:16px;
-
-    box-sizing:border-box;
 }
 
-button.action-btn{
+.login-container{
 
-    width:100%;
+    width:90%;
 
-    border:none;
+}
 
-    cursor:pointer;
-
-    font-size:18px;
 }
