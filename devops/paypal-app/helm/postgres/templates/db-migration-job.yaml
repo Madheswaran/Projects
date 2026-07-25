@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: postgres-migration
+  
+  annotations:
+
+    argocd.argoproj.io/hook: Sync
+
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+
+spec:
+
+  template:
+
+    spec:
+
+      restartPolicy: Never
+
+      containers:
+
+      - name: migrate
+
+        image: postgres:16
+
+        env:
+
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+
+        command:
+
+        - /bin/sh
+
+        - -c
+
+        - |
+
+          psql \
+          -h postgres \
+          -U admin \
+          -d paypal \
+          -f /migration/migration.sql
+
+        volumeMounts:
+
+        - name: migration
+
+          mountPath: /migration
+
+      volumes:
+
+      - name: migration
+
+        configMap:
+
+          name: postgres-migration

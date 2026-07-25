@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: postgres-migration
+
+data:
+
+  migration.sql: |
+
+{{ .Files.Get "../../postgres/migration.sql" | indent 4 }}
