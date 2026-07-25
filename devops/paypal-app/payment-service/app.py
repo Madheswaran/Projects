@@ -23,8 +23,12 @@ def get_connection():
 
 @app.route("/health")
 def health():
-    return {"status": "UP"}
+    return {"status": "UP"}, 200
 
+@app.route("/ready")
+def ready():
+
+    return {"status": "READY"}, 200
 
 @app.route("/pay", methods=["POST"])
 def pay():
