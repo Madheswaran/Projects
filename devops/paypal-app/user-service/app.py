@@ -90,7 +90,7 @@ def login():
 
     app.logger.warning("Connected to PostgreSQL")
 
-    cursor.execute("""
+    cur.execute("""
 
     SELECT
 
@@ -130,20 +130,15 @@ def login():
         return {"status": "failed"}, 401
 
     app.logger.warning("LOGIN SUCCESS")
-
+        
     return jsonify({
 
-    "id":customer[0],
-
-    "name":customer[1],
-
-    "email":customer[2],
-
-    "wallet":float(customer[3]),
-
-    "phone":customer[4],
-
-    "address":customer[5]
+        "id": row[0],
+        "name": row[1],
+        "email": row[2],
+        "wallet": float(row[3]),
+        "phone": row[4],
+        "address": row[5]
 
     })
 # ---------------------------------------------------------
