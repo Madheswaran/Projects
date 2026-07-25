@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Pay Now</title>
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static',filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        PayPal
+    </div>
+
+    <div class="nav-right">
+
+        <a href="/" class="icon-btn">
+            Dashboard
+        </a>
+
+        <a href="/logout"
+           class="logout-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="payment-card">
+
+<h2>
+
+Send Money
+
+</h2>
+
+<label>
+
+Recipient Email
+
+</label>
+
+<input
+type="email"
+placeholder="receiver@email.com">
+
+
+<label>
+
+Amount
+
+</label>
+
+<input
+type="number"
+placeholder="100">
+
+
+<label>
+
+Description
+
+</label>
+
+<textarea
+rows="4"
+placeholder="Description"></textarea>
+
+
+<button class="pay-btn">
+
+Send Payment
+
+</button>
+
+
+<a
+href="/"
+class="cancel-btn">
+
+Cancel
+
+</a>
+
+</div>
+
+</body>
+
+</html>

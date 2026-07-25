@@ -1,141 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>{{ APP_NAME }}</title>
+    <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PayPal Dashboard</title>
 
-    <style>
-
-        body{
-            margin:0;
-            font-family:Arial,Helvetica,sans-serif;
-            background:#f4f6f9;
-        }
-
-        .topbar{
-            background:#003087;
-            color:white;
-            padding:18px 30px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        }
-
-        .topbar a{
-            color:white;
-            text-decoration:none;
-            font-weight:bold;
-        }
-
-        .container{
-            width:900px;
-            margin:40px auto;
-        }
-
-        .card{
-            background:white;
-            border-radius:10px;
-            box-shadow:0 3px 10px rgba(0,0,0,.12);
-            padding:25px;
-            margin-bottom:25px;
-        }
-
-        h2{
-            margin-top:0;
-        }
-
-        .balance{
-            color:#0070ba;
-            font-size:42px;
-            font-weight:bold;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-        }
-
-        th{
-            background:#003087;
-            color:white;
-            padding:12px;
-        }
-
-        td{
-            padding:12px;
-            border-bottom:1px solid #ddd;
-        }
-
-    </style>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 <body>
 
-<div class="topbar">
+<div class="navbar">
 
-    <h2>{{ APP_NAME }}</h2>
+    <div class="logo">
+        PayPal
+    </div>
 
-    <a href="/logout">Logout</a>
+    <div class="nav-right">
+
+        <button class="icon-btn">
+            🔔 Notifications
+        </button>
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
 
 </div>
 
+
 <div class="container">
 
-    <div class="card">
 
-        <h2>Welcome</h2>
+    <div class="dashboard-grid">
 
-        <p><strong>Name:</strong> {{ customer.name }}</p>
 
-        <p><strong>Email:</strong> {{ customer.email }}</p>
+        <div class="profile-card">
+
+            <h2>
+                Welcome {{ customer.name }}
+            </h2>
+
+            <hr>
+
+            <p>
+
+                <strong>Email</strong><br>
+
+                {{ customer.email }}
+
+            </p>
+
+            <p>
+
+                <strong>Wallet Balance</strong><br>
+
+                ₹5,000
+
+            </p>
+
+            <p>
+
+                <strong>Last Login</strong><br>
+
+                Today 10:30 AM
+
+            </p>
+
+            <p>
+
+                <strong>Status</strong><br>
+
+                Active
+
+            </p>
+
+        </div>
+
+
+
+        <div class="action-card">
+
+            <h2>
+
+                Quick Actions
+
+            </h2>
+
+            <hr>
+
+            <a href="/pay" class="action-btn">
+                💳 Pay Now
+            </a>
+
+            <button class="action-btn">
+                💰 Add Money
+            </button>
+
+            <button class="action-btn">
+                📜 Transaction History
+            </button>
+
+        </div>
 
     </div>
 
-    <div class="card">
 
-        <h2>Wallet Balance</h2>
 
-        <h1>₹ {{ customer.wallet }}</h1>
+    <div class="transactions">
 
-    </div>
+        <h2>
 
-    <div class="card">
+            Recent Transactions
 
-        <h2>Recent Transactions</h2>
-
-        {% if customer.transactions %}
+        </h2>
 
         <table>
 
             <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Amount</th>
-            </tr>
 
-            {% for txn in customer.transactions %}
+                <th>Merchant</th>
+
+                <th>Amount</th>
+
+                <th>Status</th>
+
+            </tr>
 
             <tr>
-                <td>{{ txn.id }}</td>
-                <td>{{ txn.description }}</td>
-                <td>₹ {{ txn.amount }}</td>
+
+                <td>Amazon</td>
+
+                <td>-₹500</td>
+
+                <td class="success">
+                    Success
+                </td>
+
             </tr>
 
-            {% endfor %}
+            <tr>
+
+                <td>Swiggy</td>
+
+                <td>-₹220</td>
+
+                <td class="success">
+                    Success
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Salary</td>
+
+                <td class="credit">
+                    +₹65,000
+                </td>
+
+                <td class="credit">
+                    Credit
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Electricity</td>
+
+                <td>-₹1,800</td>
+
+                <td class="success">
+                    Success
+                </td>
+
+            </tr>
 
         </table>
 
-        {% else %}
-
-        <p>No recent transactions.</p>
-
-        {% endif %}
-
     </div>
+
 
 </div>
 

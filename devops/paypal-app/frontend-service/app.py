@@ -94,6 +94,18 @@ def login():
         "dashboard.html",
         customer=customer
     )
+
+# ----------------------------------
+# Pay Now
+# ----------------------------------
+
+@app.route("/pay")
+def pay():
+
+    return render_template(
+        "pay.html"
+    )
+    
 # ----------------------------------
 # Logout
 # ----------------------------------
