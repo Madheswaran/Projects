@@ -9,9 +9,15 @@ from flask import (
 
 import os
 import requests
+import psycopg2
 
 app = Flask(__name__)
 app.secret_key = "paypal-secret-key"
+
+DB_HOST = os.getenv("DB_HOST", "postgres")
+DB_NAME = os.getenv("DB_NAME", "paypal")
+DB_USER = os.getenv("DB_USER", "admin")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 
 # ---------------------------------------------------
 # Configuration
@@ -23,7 +29,14 @@ PAYMENT_SERVICE = "http://payment-service"
 APP_NAME = os.getenv("APP_NAME", "PayPal Checkout")
 ENV_NAME = os.getenv("ENV_NAME", "DEV")
 
+def get_db_connection():
 
+    return psycopg2.connect(
+        host=DB_HOST,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD
+    )
 # ---------------------------------------------------
 # Home
 # ---------------------------------------------------
@@ -135,7 +148,7 @@ def dashboard():
 
     customer_id = session["customer_id"]
 
-    conn = get_connection()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute("""
