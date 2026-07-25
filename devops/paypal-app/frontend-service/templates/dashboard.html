@@ -5,7 +5,8 @@
 
     <title>{{ APP_NAME }}</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -14,38 +15,40 @@
 <div class="topbar">
 
     <div class="logo">
+
         {{ APP_NAME }}
+
     </div>
 
     <a href="/logout" class="logout-btn">
+
         Logout
+
     </a>
 
 </div>
 
 <div class="container">
 
-    <!-- Left Section -->
-
     <div class="left-panel">
 
         <div class="card">
 
-            <h2>Welcome {{ customer.name }}</h2>
+            <h2>Customer Details</h2>
 
             <hr>
 
             <p><strong>Name</strong></p>
+
             <p>{{ customer.name }}</p>
 
             <p><strong>Email</strong></p>
+
             <p>{{ customer.email }}</p>
 
-            <p><strong>Phone</strong></p>
-            <p>{{ customer.phone }}</p>
+            <p><strong>Customer ID</strong></p>
 
-            <p><strong>Address</strong></p>
-            <p>{{ customer.address }}</p>
+            <p>{{ customer.id }}</p>
 
         </div>
 
@@ -53,22 +56,32 @@
 
             <h2>Recent Transactions</h2>
 
+            <hr>
+
             {% if customer.transactions %}
 
             <table>
 
                 <tr>
+
                     <th>ID</th>
+
                     <th>Description</th>
+
                     <th>Amount</th>
+
                 </tr>
 
                 {% for txn in customer.transactions %}
 
                 <tr>
+
                     <td>{{ txn.id }}</td>
+
                     <td>{{ txn.description }}</td>
+
                     <td>₹ {{ txn.amount }}</td>
+
                 </tr>
 
                 {% endfor %}
@@ -77,15 +90,13 @@
 
             {% else %}
 
-            <p>No recent transactions.</p>
+            <p>No recent transactions available.</p>
 
             {% endif %}
 
         </div>
 
     </div>
-
-    <!-- Right Section -->
 
     <div class="right-panel">
 
@@ -99,16 +110,22 @@
 
             </div>
 
-            <a href="/pay" class="action-btn">
+            <a href="#" class="action-btn">
+
                 Pay Now
+
             </a>
 
-            <a href="/add-money" class="action-btn">
+            <a href="#" class="action-btn">
+
                 Add Money
+
             </a>
 
-            <a href="/profile" class="action-btn">
-                Profile
+            <a href="#" class="action-btn">
+
+                Transaction History
+
             </a>
 
         </div>

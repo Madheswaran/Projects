@@ -2,51 +2,54 @@
 <html>
 
 <head>
+
     <title>{{ APP_NAME }}</title>
-    <link rel="stylesheet" href="/static/style.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 
-<body>
+<body class="login-page">
 
-    <div class="login-container">
+<div class="login-container">
 
-        <h1>{{ APP_NAME }}</h1>
+    <h1>{{ APP_NAME }}</h1>
 
-        <p class="environment">
-            Environment : {{ ENV_NAME }}
-        </p>
+    <p class="environment">
+        Environment : {{ ENVIRONMENT }}
+    </p>
 
-        {% if error %}
-        <div class="error">
-            {{ error }}
-        </div>
-        {% endif %}
-
-        <form method="POST">
-
-            <label>Email</label>
-
-            <input
-                type="email"
-                name="email"
-                placeholder="Enter Email"
-                required>
-
-            <label>Password</label>
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Enter Password"
-                required>
-
-            <button type="submit">
-                Login
-            </button>
-
-        </form>
-
+    {% if error %}
+    <div class="error">
+        {{ error }}
     </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Email</label>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            required>
+
+        <label>Password</label>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            required>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+</div>
 
 </body>
 
