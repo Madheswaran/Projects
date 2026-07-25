@@ -1,0 +1,22 @@
+<h2>Payment Successful</h2>
+
+<hr>
+
+<p><b>Transaction ID</b></p>
+<p>{{ payment.transaction_id }}</p>
+
+<p><b>Sender</b></p>
+<p>{{ payment.sender }}</p>
+
+<p><b>Receiver</b></p>
+<p>{{ payment.receiver }}</p>
+
+<p><b>Amount</b></p>
+<p>₹ {{ payment.amount }}</p>
+
+<p><b>Remaining Balance</b></p>
+<p>₹ {{ payment.remaining_balance }}</p>
+
+<a href="/dashboard" class="action-btn">
+Back to Dashboard
+</a>

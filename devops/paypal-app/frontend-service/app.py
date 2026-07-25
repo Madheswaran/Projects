@@ -3,13 +3,15 @@ from flask import (
     render_template,
     request,
     redirect,
-    jsonify
+    jsonify,
+    session
 )
 
 import os
 import requests
 
 app = Flask(__name__)
+app.secret_key = "paypal-secret-key"
 
 # ---------------------------------------------------
 # Configuration
@@ -117,6 +119,7 @@ def login():
 
     ]
 
+    session["customer_id"] = customer["id"]
     return render_template(
         "dashboard.html",
         APP_NAME=APP_NAME,
@@ -129,6 +132,9 @@ def login():
 # ---------------------------------------------------
 @app.route("/pay", methods=["GET", "POST"])
 def pay():
+
+    if "customer_id" not in session:
+    return redirect("/login")
 
     if request.method == "GET":
 
@@ -147,9 +153,9 @@ def pay():
     response = requests.post(
         f"{PAYMENT_SERVICE}/payment",
         json={
-            "sender": "ganesha@gmail.com",
-            "receiver": receiver,
-            "amount": amount
+            "customer_id": session["customer_id"],          # Temporary until session/login stores ID
+            "receiver_email": receiver,
+            "amount": float(amount)
         }
     )
 
@@ -194,7 +200,7 @@ def profile():
 
 @app.route("/logout")
 def logout():
-
+    session.clear()
     return redirect("/login")
 
 
