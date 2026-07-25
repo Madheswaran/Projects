@@ -16,6 +16,7 @@ app = Flask(__name__)
 # ---------------------------------------------------
 
 USER_SERVICE = "http://user-service"
+PAYMENT_SERVICE = "http://payment-service"  
 
 APP_NAME = os.getenv("APP_NAME", "PayPal Checkout")
 ENV_NAME = os.getenv("ENV_NAME", "DEV")
@@ -136,27 +137,28 @@ def pay():
             APP_NAME=APP_NAME
         )
 
-    receiver = request.form["receiver"]
-    amount = request.form["amount"]
+        receiver = request.form["receiver"]
+        amount = request.form["amount"]
 
-    app.logger.warning(
-        f"PAY REQUEST -> {receiver} : {amount}"
-    )
+        app.logger.warning(
+            f"PAY REQUEST -> {receiver} : {amount}"
+        )
 
-    #
-    # Tomorrow we'll call user-service here.
-    #
+        response = requests.post(
+            f"{PAYMENT_SERVICE}/payment",
+            json={
+                "sender": "ganesha@gmail.com",   # Temporary
+                "receiver": receiver,
+                "amount": amount
+            }
+        )
 
-    return f"""
-    <h2>Payment Successful</h2>
+        result = response.json()
 
-    Receiver : {receiver}<br>
-
-    Amount : ₹ {amount}<br><br>
-
-    <a href="/login">Back</a>
-    """
-
+        return render_template(
+            "payment-success.html",
+            payment=result
+        )
 
 # ---------------------------------------------------
 # Add Money

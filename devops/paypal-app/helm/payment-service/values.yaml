@@ -1,0 +1,20 @@
+paymentService:
+  replicaCount: 1
+
+  image:
+    repository: acrpaypal1784989498.azurecr.io/payment-service
+    tag: latest
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3003
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi

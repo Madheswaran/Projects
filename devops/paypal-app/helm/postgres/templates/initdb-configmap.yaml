@@ -6,17 +6,81 @@ metadata:
 data:
 
   01-schema.sql: |
+
     CREATE TABLE IF NOT EXISTS customers (
       id SERIAL PRIMARY KEY,
       name VARCHAR(100) NOT NULL,
       email VARCHAR(100) UNIQUE NOT NULL,
       password VARCHAR(100) NOT NULL,
-      wallet DECIMAL(10,2) DEFAULT 0
+      wallet DECIMAL(10,2) DEFAULT 0,
+      phone VARCHAR(20),
+      address TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS transactions (
+      id SERIAL PRIMARY KEY,
+      sender_id INTEGER REFERENCES customers(id),
+      receiver_email VARCHAR(100),
+      amount DECIMAL(10,2),
+      transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
   02-seed.sql: |
-    INSERT INTO customers (name,email,password,wallet)
+
+    INSERT INTO customers
+    (
+      name,
+      email,
+      password,
+      wallet,
+      phone,
+      address
+    )
     VALUES
-    ('Ganesha','ganesha@gmail.com','password123',5000),
-    ('Muruga','muruga@gmail.com','password123',3000),
-    ('Lakshmi','lakshmi@gmail.com','password123',7000);
+    (
+      'Ganesha',
+      'ganesha@gmail.com',
+      'password123',
+      5000,
+      '9876543210',
+      'Chennai'
+    ),
+    (
+      'Muruga',
+      'muruga@gmail.com',
+      'password123',
+      3000,
+      '9876543211',
+      'Coimbatore'
+    ),
+    (
+      'Lakshmi',
+      'lakshmi@gmail.com',
+      'password123',
+      7000,
+      '9876543212',
+      'Madurai'
+    );
+
+    INSERT INTO transactions
+    (
+      sender_id,
+      receiver_email,
+      amount
+    )
+    VALUES
+    (
+      1,
+      'muruga@gmail.com',
+      500
+    ),
+    (
+      2,
+      'ganesha@gmail.com',
+      250
+    ),
+    (
+      3,
+      'ganesha@gmail.com',
+      1000
+    );

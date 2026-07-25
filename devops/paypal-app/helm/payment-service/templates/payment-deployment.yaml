@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: payment-service
+
+spec:
+  replicas: {{ .Values.paymentService.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: payment-service
+
+  template:
+
+    metadata:
+      labels:
+        app: payment-service
+
+    spec:
+
+      imagePullSecrets:
+        - name: acr-secret
+
+      containers:
+
+      - name: payment-service
+
+        image: "{{ .Values.paymentService.image.repository }}:{{ .Values.paymentService.image.tag }}"
+
+        imagePullPolicy: {{ .Values.paymentService.image.pullPolicy }}
+
+        ports:
+
+        - containerPort: 3003
+
+        envFrom:
+
+        - configMapRef:
+            name: user-service-config
+
+        - secretRef:
+            name: user-service-secret
+
+        readinessProbe:
+
+          httpGet:
+            path: /ready
+            port: 3003
+
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+        livenessProbe:
+
+          httpGet:
+            path: /health
+            port: 3003
+
+          initialDelaySeconds: 20
+          periodSeconds: 10
+
+        startupProbe:
+
+          httpGet:
+            path: /health
+            port: 3003
+
+          periodSeconds: 10
+          failureThreshold: 30
+
+        resources:
+
+          requests:
+            cpu: {{ .Values.paymentService.resources.requests.cpu }}
+            memory: {{ .Values.paymentService.resources.requests.memory }}
+
+          limits:
+            cpu: {{ .Values.paymentService.resources.limits.cpu }}
+            memory: {{ .Values.paymentService.resources.limits.memory }}
