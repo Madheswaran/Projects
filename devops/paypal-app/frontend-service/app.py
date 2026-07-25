@@ -137,28 +137,28 @@ def pay():
             APP_NAME=APP_NAME
         )
 
-        receiver = request.form["receiver"]
-        amount = request.form["amount"]
+    receiver = request.form["receiver"]
+    amount = request.form["amount"]
 
-        app.logger.warning(
-            f"PAY REQUEST -> {receiver} : {amount}"
-        )
+    app.logger.warning(
+        f"PAY REQUEST -> {receiver} : {amount}"
+    )
 
-        response = requests.post(
-            f"{PAYMENT_SERVICE}/payment",
-            json={
-                "sender": "ganesha@gmail.com",   # Temporary
-                "receiver": receiver,
-                "amount": amount
-            }
-        )
+    response = requests.post(
+        f"{PAYMENT_SERVICE}/payment",
+        json={
+            "sender": "ganesha@gmail.com",
+            "receiver": receiver,
+            "amount": amount
+        }
+    )
 
-        result = response.json()
+    result = response.json()
 
-        return render_template(
-            "payment-success.html",
-            payment=result
-        )
+    return render_template(
+        "payment-success.html",
+        payment=result
+    )
 
 # ---------------------------------------------------
 # Add Money

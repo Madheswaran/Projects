@@ -30,7 +30,7 @@ def ready():
 
     return {"status": "READY"}, 200
 
-@app.route("/pay", methods=["POST"])
+@app.route("/payment", methods=["POST"])
 def pay():
 
     data = request.json
@@ -89,7 +89,13 @@ def pay():
 
     return jsonify({
 
+        "status": "SUCCESS",
+
         "message": "Payment Successful",
+
+        "customer_id": customer_id,
+
+        "amount": amount,
 
         "remaining_balance": new_wallet
 
