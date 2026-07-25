@@ -3,7 +3,6 @@ kind: Job
 
 metadata:
   name: postgres-migration
-  
   annotations:
 
     argocd.argoproj.io/hook: Sync
@@ -33,18 +32,15 @@ spec:
               key: POSTGRES_PASSWORD
 
         command:
-
-        - /bin/sh
-
-        - -c
-
-        - |
-
-          psql \
-          -h postgres \
-          -U admin \
-          -d paypal \
-          -f /migration/migration.sql
+          - /bin/sh
+          - -c
+          - |
+              psql \
+              -v ON_ERROR_STOP=1 \
+              -h postgres \
+              -U admin \
+              -d paypal \
+              -f /migration/migration.sql
 
         volumeMounts:
 
