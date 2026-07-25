@@ -1,0 +1,148 @@
+name: PayPal PostgreSQL CI/CD
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'devops/paypal-app/helm/postgres/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: postgres
+  cancel-in-progress: true
+
+jobs:
+
+  postgres-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    ########################################################
+    # Checkout
+    ########################################################
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    ########################################################
+    # Install Helm
+    ########################################################
+
+    - name: Install Helm
+      uses: azure/setup-helm@v4
+
+    ########################################################
+    # Validate Helm Chart
+    ########################################################
+
+    - name: Helm Lint
+      run: |
+        helm lint \
+        devops/paypal-app/helm/postgres
+
+    ########################################################
+    # Verify migration.sql exists
+    ########################################################
+
+    - name: Verify Migration File
+      run: |
+
+        test -f \
+        devops/paypal-app/helm/postgres/files/migration.sql
+
+        echo "migration.sql found"
+
+    ########################################################
+    # Azure Login
+    ########################################################
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    ########################################################
+    # Install ArgoCD CLI
+    ########################################################
+
+    - name: Install ArgoCD CLI
+      run: |
+
+        curl -sSL \
+        -o argocd \
+        https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+
+        chmod +x argocd
+
+        sudo mv argocd /usr/local/bin/
+
+    ########################################################
+    # Login to ArgoCD
+    ########################################################
+
+    - name: Login to ArgoCD
+      run: |
+
+        argocd login \
+        ${{ secrets.ARGOCD_SERVER }} \
+        --username ${{ secrets.ARGOCD_USERNAME }} \
+        --password ${{ secrets.ARGOCD_PASSWORD }} \
+        --insecure
+
+    ########################################################
+    # Sync PostgreSQL
+    ########################################################
+
+    - name: Sync PostgreSQL
+      run: |
+
+        argocd app sync postgres
+
+    ########################################################
+    # Wait for Sync
+    ########################################################
+
+    - name: Wait for PostgreSQL
+      run: |
+
+        argocd app wait postgres \
+        --health \
+        --sync \
+        --timeout 300
+
+    ########################################################
+    # Display Status
+    ########################################################
+
+    - name: Show PostgreSQL Status
+      run: |
+
+        argocd app get postgres
+
+    ########################################################
+    # Success
+    ########################################################
+
+    - name: Success
+      if: success()
+      run: |
+
+        echo "PostgreSQL deployment completed successfully."
+
+    ########################################################
+    # Failure
+    ########################################################
+
+    - name: Failure
+      if: failure()
+      run: |
+
+        echo "PostgreSQL deployment failed."
