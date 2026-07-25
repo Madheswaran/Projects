@@ -134,7 +134,7 @@ def login():
 def pay():
 
     if "customer_id" not in session:
-    return redirect("/login")
+        return redirect("/login")
 
     if request.method == "GET":
 
