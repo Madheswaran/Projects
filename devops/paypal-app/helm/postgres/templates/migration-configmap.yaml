@@ -8,4 +8,4 @@ data:
 
   migration.sql: |
 
-{{ .Files.Get "../../postgres/migration.sql" | indent 4 }}
+{{ .Files.Get "files/migration.sql" | indent 4 }}
