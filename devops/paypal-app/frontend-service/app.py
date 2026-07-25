@@ -127,6 +127,49 @@ def login():
     )
 
 
+@app.route("/dashboard")
+def dashboard():
+
+    if "customer_id" not in session:
+        return redirect("/login")
+
+    customer_id = session["customer_id"]
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            id,
+            name,
+            email,
+            wallet,
+            phone,
+            address
+        FROM customers
+        WHERE id=%s
+    """, (customer_id,))
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    customer = {
+        "id": row[0],
+        "name": row[1],
+        "email": row[2],
+        "wallet": row[3],
+        "phone": row[4],
+        "address": row[5],
+        "transactions": []
+    }
+
+    return render_template(
+        "dashboard.html",
+        APP_NAME=APP_NAME,
+        customer=customer
+    )
 # ---------------------------------------------------
 # Pay
 # ---------------------------------------------------
