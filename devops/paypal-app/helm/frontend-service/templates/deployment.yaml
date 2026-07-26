@@ -44,6 +44,9 @@ spec:
 
           - secretRef:
               name: frontend-service-secret
+
+          - secretRef:
+              name: postgres-secret
         
         livenessProbe:
           httpGet:
