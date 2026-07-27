@@ -193,7 +193,7 @@ def add_money():
 
     amount = float(data["amount"])
 
-    conn = get_connection()
+    conn = get_db_connection()
 
     cur = conn.cursor()
 
