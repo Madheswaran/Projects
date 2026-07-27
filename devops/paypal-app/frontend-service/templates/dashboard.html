@@ -40,7 +40,6 @@
     <div class="left-panel">
 
         <!-- Recent Transactions -->
-
         <div class="card">
 
             <h2>Recent Transactions</h2>
@@ -49,49 +48,35 @@
 
             {% if customer.transactions %}
 
-            <table class="transaction-table">
+            <table>
 
-                <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-
-                        <th>Receiver</th>
-
-                        <th>Amount</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>Receiver</th>
+                    <th>Amount</th>
+                </tr>
 
                 {% for txn in customer.transactions %}
 
-                    <tr>
-
-                        <td>#{{ txn.id }}</td>
-
-                        <td>{{ txn.receiver }}</td>
-
-                        <td>₹ {{ "%.2f"|format(txn.amount) }}</td>
-
-                    </tr>
+                <tr>
+                    <td>#{{ txn.id }}</td>
+                    <td>{{ txn.receiver }}</td>
+                    <td>₹ {{ txn.amount }}</td>
+                </tr>
 
                 {% endfor %}
-
-                </tbody>
 
             </table>
 
             {% else %}
 
-                <p>No recent transactions available.</p>
+            <p style="text-align:center; padding:25px;">
+                No recent transactions found.
+            </p>
 
             {% endif %}
 
-        </div>
+        </div>        
 
     </div>
 

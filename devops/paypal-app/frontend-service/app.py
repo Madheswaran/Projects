@@ -189,7 +189,7 @@ def dashboard():
 
         ORDER BY transaction_date DESC
 
-        LIMIT 5
+        LIMIT 10
         """,
         (
             session["customer_id"],
@@ -197,6 +197,8 @@ def dashboard():
     )
 
     rows = cur.fetchall()
+
+    print(customer["transactions"])
 
     customer["transactions"] = []
 
