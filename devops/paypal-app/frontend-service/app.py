@@ -107,38 +107,9 @@ def login():
 
     customer = response.json()
 
-    app.logger.warning(f"Customer = {customer}")
-
-    # Temporary sample transactions
-    customer["transactions"] = [
-
-        {
-            "id": 1001,
-            "description": "Amazon Shopping",
-            "amount": 1200
-        },
-
-        {
-            "id": 1002,
-            "description": "Netflix Subscription",
-            "amount": 499
-        },
-
-        {
-            "id": 1003,
-            "description": "Electricity Bill",
-            "amount": 1850
-        }
-
-    ]
-
     session["customer_id"] = customer["id"]
-    return render_template(
-        "dashboard.html",
-        APP_NAME=APP_NAME,
-        customer=customer
-    )
 
+    return redirect("/dashboard")
 
 @app.route("/dashboard")
 def dashboard():
