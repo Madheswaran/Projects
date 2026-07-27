@@ -5,3 +5,4 @@ metadata:
 data:
   APP_NAME: {{ .Values.config.appName | quote }}
   ENV_NAME: {{ .Values.config.environment | quote }}
+  DB_HOST: {{ .Values.config.db_host | quote }}

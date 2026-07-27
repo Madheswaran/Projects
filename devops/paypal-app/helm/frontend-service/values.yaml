@@ -1,5 +1,5 @@
 image:
-  repository: acrpaypal1785064884.azurecr.io/frontend-service
+  repository: acrpaypal1785125993.azurecr.io/frontend-service
   tag: latest
   pullPolicy: Always
 
@@ -27,6 +27,7 @@ ingress:
 config:
   appName: "Frontend Service"
   environment: "DEV"
+  db_host: "postgres"
 
 secret:
   apiKey: "paypal-api-key-123"
