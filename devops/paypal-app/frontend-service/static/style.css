@@ -196,9 +196,11 @@ body{
 
     width:980px;
 
-    margin:25px auto;
+    margin:35px auto;
 
     display:flex;
+
+    align-items:flex-start;
 
     gap:18px;
 
@@ -218,9 +220,9 @@ body{
 
     flex-direction:column;
 
-    gap:8px;
+    gap:16px;
 
-    margin-top:-25px;
+    align-self:flex-start;
 
 }
 
