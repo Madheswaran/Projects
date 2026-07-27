@@ -245,9 +245,6 @@ def pay():
         f"PAY REQUEST -> {receiver} : {amount}"
     )
 
-    data = request.json
-    app.logger.warning(data)
-
     response = requests.post(
         f"{PAYMENT_SERVICE}/payment",
         json={

@@ -32,9 +32,10 @@ def ready():
 def pay():
 
     data = request.json
+    app.logger.warning(f"Incoming JSON: {data}")
 
     customer_id = data["customer_id"]
-    receiver_email = data["receiver_email"]
+    receiver_email = data["receiver"]
     amount = float(data["amount"])
 
     conn = get_connection()
