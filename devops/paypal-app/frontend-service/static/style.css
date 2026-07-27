@@ -196,7 +196,7 @@ body{
 
     width:980px;
 
-    margin:35px auto;
+    margin:20px auto;
 
     display:flex;
 
@@ -220,7 +220,7 @@ body{
 
     flex-direction:column;
 
-    gap:16px;
+    gap:10px;
 
     align-self:flex-start;
 
@@ -257,7 +257,7 @@ body{
 
 .card hr{
 
-    margin:10px 0 14px;
+    margin:6px 0 14px;
 
     border:none;
 
@@ -317,7 +317,7 @@ body{
 
     font-weight:bold;
 
-    margin:10px 0;
+    margin:8px 0;
 
 }
 
