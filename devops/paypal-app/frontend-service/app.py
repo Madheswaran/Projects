@@ -178,6 +178,45 @@ def dashboard():
         "transactions": []
     }
 
+    cur.execute(
+        """
+        SELECT
+            id,
+            receiver_email,
+            amount,
+            created_at
+
+        FROM transactions
+
+        WHERE customer_id=%s
+
+        ORDER BY created_at DESC
+
+        LIMIT 5
+        """,
+        (
+            session["customer_id"],
+        )
+    )
+
+    rows = cur.fetchall()
+
+    customer["transactions"] = []
+
+    for row in rows:
+
+        customer["transactions"].append({
+
+            "id": row[0],
+
+            "description": row[1],
+
+            "amount": row[2],
+
+            "date": row[3]
+
+        })
+
     return render_template(
         "dashboard.html",
         APP_NAME=APP_NAME,

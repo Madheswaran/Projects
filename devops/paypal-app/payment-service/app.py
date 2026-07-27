@@ -123,6 +123,49 @@ def pay():
         )
     )
 
+    cur.execute(
+        """
+        INSERT INTO transactions
+        (
+            customer_id,
+            receiver_email,
+            amount
+        )
+        VALUES
+        (
+            %s,
+            %s,
+            %s
+        )
+        RETURNING id
+        """,
+        (
+            customer_id,
+            data["receiver"],
+            amount
+        )
+    )
+
+    transaction_id = cur.fetchone()[0]
+
+    return jsonify({
+
+        "status": "SUCCESS",
+
+        "transaction_id": transaction_id,
+
+        "message": "Payment Successful",
+
+        "customer_id": customer_id,
+
+        "receiver": data["receiver"],
+
+        "amount": amount,
+
+        "remaining_balance": new_wallet
+
+    })
+
     ###############################################
     # Credit Receiver
     ###############################################
@@ -175,17 +218,17 @@ def pay():
 
     return jsonify({
 
-        "status":"SUCCESS",
+        "status": "SUCCESS",
 
-        "transaction_id":txn_id,
+        "message": "Payment Successful",
 
-        "sender":sender[2],
+        "customer_id": customer_id,
 
-        "receiver":receiver_email,
+        "receiver": data["receiver"],
 
-        "amount":amount,
+        "amount": amount,
 
-        "remaining_balance":sender_wallet-amount
+        "remaining_balance": new_wallet
 
     })
 

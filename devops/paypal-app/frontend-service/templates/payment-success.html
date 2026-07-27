@@ -1,22 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Payment Successful</title>
+
+</head>
+
+<body>
+
 <h2>Payment Successful</h2>
 
 <hr>
 
-<p><b>Transaction ID</b></p>
-<p>{{ payment.transaction_id }}</p>
+<p><b>Status:</b> {{ payment.status }}</p>
 
-<p><b>Sender</b></p>
-<p>{{ payment.sender }}</p>
+<p><b>Message:</b> {{ payment.message }}</p>
 
-<p><b>Receiver</b></p>
-<p>{{ payment.receiver }}</p>
+<p><b>Customer ID:</b> {{ payment.customer_id }}</p>
 
-<p><b>Amount</b></p>
-<p>₹ {{ payment.amount }}</p>
+<p><b>Receiver:</b> {{ payment.receiver }}</p>
 
-<p><b>Remaining Balance</b></p>
-<p>₹ {{ payment.remaining_balance }}</p>
+<p><b>Amount:</b> ₹ {{ payment.amount }}</p>
 
-<a href="/dashboard" class="action-btn">
-Back to Dashboard
+<p><b>Remaining Balance:</b> ₹ {{ payment.remaining_balance }}</p>
+
+<br>
+
+<a href="/dashboard">
+
+    Back to Dashboard
+
 </a>
+
+</body>
+
+</html>
