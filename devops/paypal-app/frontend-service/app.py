@@ -245,11 +245,13 @@ def pay():
         f"PAY REQUEST -> {receiver} : {amount}"
     )
 
+    app.logger.warning(data)
+
     response = requests.post(
         f"{PAYMENT_SERVICE}/payment",
         json={
             "customer_id": session["customer_id"],          # Temporary until session/login stores ID
-            "receiver_email": receiver,
+            "receiver": receiver,
             "amount": float(amount)
         }
     )
