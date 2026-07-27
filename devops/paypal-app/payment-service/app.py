@@ -41,13 +41,13 @@ def pay():
     conn = get_connection()
     cur = conn.cursor()
 
-    ###############################################
-    # Get sender
-    ###############################################
+    #################################################
+    # Get Sender
+    #################################################
 
     cur.execute(
         """
-        SELECT id,name,email,wallet
+        SELECT id, name, email, wallet
         FROM customers
         WHERE id=%s
         """,
@@ -57,22 +57,21 @@ def pay():
     sender = cur.fetchone()
 
     if sender is None:
-
         cur.close()
         conn.close()
 
         return jsonify({
-            "status":"FAILED",
-            "message":"Sender not found"
-        }),404
+            "status": "FAILED",
+            "message": "Sender not found"
+        }), 404
 
-    ###############################################
-    # Get receiver
-    ###############################################
+    #################################################
+    # Get Receiver
+    #################################################
 
     cur.execute(
         """
-        SELECT id,name,email,wallet
+        SELECT id, name, email, wallet
         FROM customers
         WHERE email=%s
         """,
@@ -82,21 +81,20 @@ def pay():
     receiver = cur.fetchone()
 
     if receiver is None:
-
         cur.close()
         conn.close()
 
         return jsonify({
-            "status":"FAILED",
-            "message":"Receiver not found"
-        }),404
+            "status": "FAILED",
+            "message": "Receiver not found"
+        }), 404
 
     sender_wallet = float(sender[3])
     receiver_wallet = float(receiver[3])
 
-    ###############################################
-    # Balance validation
-    ###############################################
+    #################################################
+    # Validate Balance
+    #################################################
 
     if sender_wallet < amount:
 
@@ -104,13 +102,15 @@ def pay():
         conn.close()
 
         return jsonify({
-            "status":"FAILED",
-            "message":"Insufficient Balance"
-        }),400
+            "status": "FAILED",
+            "message": "Insufficient Balance"
+        }), 400
 
-    ###############################################
-    # Debit Sender
-    ###############################################
+    #################################################
+    # Update Wallets
+    #################################################
+
+    new_wallet = sender_wallet - amount
 
     cur.execute(
         """
@@ -119,73 +119,26 @@ def pay():
         WHERE id=%s
         """,
         (
-            sender_wallet-amount,
+            new_wallet,
             sender[0]
         )
     )
 
     cur.execute(
         """
-        INSERT INTO transactions
-        (
-            customer_id,
-            receiver_email,
-            amount
-        )
-        VALUES
-        (
-            %s,
-            %s,
-            %s
-        )
-        RETURNING id
-        """,
-        (
-            customer_id,
-            data["receiver"],
-            amount
-        )
-    )
-
-    transaction_id = cur.fetchone()[0]
-
-    return jsonify({
-
-        "status": "SUCCESS",
-
-        "transaction_id": transaction_id,
-
-        "message": "Payment Successful",
-
-        "customer_id": customer_id,
-
-        "receiver": data["receiver"],
-
-        "amount": amount,
-
-        "remaining_balance": new_wallet
-
-    })
-
-    ###############################################
-    # Credit Receiver
-    ###############################################
-
-    cur.execute(
-        """
         UPDATE customers
         SET wallet=%s
         WHERE id=%s
         """,
         (
-            receiver_wallet+amount,
+            receiver_wallet + amount,
             receiver[0]
         )
     )
 
-    ###############################################
-    # Insert Transaction
-    ###############################################
+    #################################################
+    # Save Transaction
+    #################################################
 
     cur.execute(
         """
@@ -204,28 +157,34 @@ def pay():
         RETURNING id
         """,
         (
-            sender[0],
+            customer_id,
             receiver_email,
             amount
         )
     )
 
-    txn_id = cur.fetchone()[0]
+    transaction_id = cur.fetchone()[0]
 
     conn.commit()
 
     cur.close()
     conn.close()
 
+    #################################################
+    # Response
+    #################################################
+
     return jsonify({
 
         "status": "SUCCESS",
+
+        "transaction_id": transaction_id,
 
         "message": "Payment Successful",
 
         "customer_id": customer_id,
 
-        "receiver": data["receiver"],
+        "receiver": receiver_email,
 
         "amount": amount,
 
