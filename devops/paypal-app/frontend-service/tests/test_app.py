@@ -71,7 +71,8 @@ def test_login_success(mock_post):
         data={
             "email": "ganesha@test.com",
             "password": "password"
-        }
+        },
+        follow_redirects=True
     )
 
     assert response.status_code == 200
