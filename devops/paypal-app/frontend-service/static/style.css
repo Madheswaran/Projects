@@ -213,7 +213,14 @@ body{
 .right-panel{
 
     width:360px;
-    gap:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    margin-top:-8px;
 
 }
 
@@ -229,7 +236,7 @@ body{
 
     border-radius:14px;
 
-    padding:18px;
+    padding:12px;
 
     margin-bottom:18px;
 
@@ -307,7 +314,7 @@ body{
 
     font-weight:bold;
 
-    margin:15px 0;
+    margin:12px 0;
 
 }
 
@@ -335,7 +342,7 @@ body{
 
     padding:10px;
 
-    margin-top:10px;
+    margin-top:7px;
 
     border-radius:8px;
 
@@ -470,4 +477,13 @@ td{
 .receiver{
     text-align:left;
     padding-left:20px;
+}
+
+.profile-table td{
+    padding:6px 0;
+    font-size:16px;
+}
+
+.profile-table td:first-child{
+    font-weight:600;
 }
