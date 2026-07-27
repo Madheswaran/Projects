@@ -126,7 +126,7 @@ def pay():
 
     cur.execute(
         """
-        UPDATE customers
+        UPDATE customers    
         SET wallet=%s
         WHERE id=%s
         """,

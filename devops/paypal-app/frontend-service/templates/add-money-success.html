@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Money Added Successfully</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+</head>
+
+<body>
+
+<h2>Money Added Successfully</h2>
+
+<hr>
+
+<p><b>Status:</b> {{ payment.status }}</p>
+
+<p><b>Message:</b> {{ payment.message }}</p>
+
+<p><b>Amount:</b> ₹ {{ payment.amount }}</p>
+
+<p><b>Remaining Balance:</b> ₹ {{ payment.remaining_balance }}</p>
+
+<br>
+
+<a href="/dashboard">
+
+    Back to Dashboard
+
+</a>
+
+</body>
+
+</html>

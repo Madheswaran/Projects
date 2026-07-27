@@ -216,6 +216,57 @@ def dashboard():
         APP_NAME=APP_NAME,
         customer=customer
     )
+
+@app.route("/transactions")
+def transactions():
+
+    if "customer_id" not in session:
+        return redirect("/login")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT
+            id,
+            receiver_email,
+            amount,
+            transaction_date
+        FROM transactions
+        WHERE sender_id=%s
+        ORDER BY transaction_date DESC
+        """,
+        (session["customer_id"],)
+    )
+
+    rows = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    txns = []
+
+    for row in rows:
+
+        txns.append({
+
+            "id": row[0],
+            "receiver": row[1],
+            "amount": row[2],
+            "date": row[3]
+
+        })
+
+    return render_template(
+
+        "transactions.html",
+
+        APP_NAME=APP_NAME,
+
+        transactions=txns
+
+    )
 # ---------------------------------------------------
 # Pay
 # ---------------------------------------------------

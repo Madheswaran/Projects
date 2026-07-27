@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Transaction History</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="logo">
+        {{ APP_NAME }}
+    </div>
+
+    <a href="/dashboard" class="logout-btn">
+
+        Back
+
+    </a>
+
+</div>
+
+<div class="container">
+
+<div class="card" style="width:1000px;margin:auto;"></div>
+
+<h2>Transaction History</h2>
+
+<table>
+
+<tr>
+
+<th>Transaction ID</th>
+
+<th>Receiver Email</th>
+
+<th>Amount</th>
+
+<th>Date</th>
+
+</tr>
+
+{% if transactions %}
+
+{% for txn in transactions %}
+
+<tr>
+
+<td>{{ txn.id }}</td>
+
+<td>{{ txn.receiver }}</td>
+
+<td style="text-align:right;">
+    ₹ {{ txn.amount }}
+</td>
+
+<td>{{ txn.date }}</td>
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+    <td colspan="4" style="text-align:center;">
+        No Transactions Found
+    </td>
+</tr>
+
+{% endif %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
