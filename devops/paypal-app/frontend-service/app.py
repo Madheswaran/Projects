@@ -198,8 +198,6 @@ def dashboard():
 
     rows = cur.fetchall()
 
-    print(customer["transactions"])
-
     customer["transactions"] = []
 
     for row in rows:
@@ -209,6 +207,8 @@ def dashboard():
             "amount": row[2],
             "date": row[3]
         })
+    
+    app.logger.warning(f"Transactions = {customer['transactions']}")
 
     cur.close()
     conn.close()
@@ -267,7 +267,6 @@ def transactions():
 
         })
 
-    app.logger.warning(f"Transactions = {customer['transactions']}")
     return render_template(
         "transactions.html",
         APP_NAME=APP_NAME,
