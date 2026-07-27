@@ -436,6 +436,10 @@ td{
     margin:30px auto;
 }
 
+.history-container .card{
+    width:100%;
+}
+
 .history-table{
     width:100%;
     border-collapse:collapse;
@@ -451,6 +455,7 @@ td{
     padding:16px;
     border-bottom:1px solid #ddd;
     text-align:center;
+    white-space: nowrap;
 }
 
 .status-success{

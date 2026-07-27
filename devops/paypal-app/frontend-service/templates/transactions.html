@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
 
-<title>Transaction History</title>
+    <title>{{ APP_NAME }}</title>
 
-<link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
 </head>
 
@@ -25,74 +25,88 @@
     </div>
 
     <a href="/dashboard" class="logout-btn">
-
-        Back
-
+        Dashboard
     </a>
 
 </div>
 
-<div class="container">
+<div class="history-container">
 
-<div class="card" style="width:1000px;margin:auto;"></div>
+    <div class="card">
 
-<h2>Transaction History</h2>
+        <h2>Transaction History</h2>
 
-<table>
+        <hr>
 
-<tr>
+        {% if transactions %}
 
-    <th>Transaction</th>
+        <table class="history-table">
 
-    <th>Receiver</th>
+            <thead>
 
-    <th>Amount</th>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Receiver</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
 
-    <th>Date</th>
+            </thead>
 
-    <th>Status</th>
+            <tbody>
 
-</tr>
+            {% for txn in transactions %}
 
-{% if transactions %}
+                <tr>
 
-{% for txn in transactions %}
+                    <td>#{{ txn.id }}</td>
 
-<tr>
+                    <td class="receiver">
+                        {{ txn.receiver }}
+                    </td>
 
-<td>{{ txn.id }}</td>
+                    <td>
+                        ₹ {{ "%.2f"|format(txn.amount) }}
+                    </td>
 
-<td>{{ txn.receiver }}</td>
+                    <td>
+                        {{ txn.date }}
+                    </td>
 
-<td style="text-align:right;">
-    ₹ {{ "%.2f"|format(txn.amount) }}
-</td>
+                    <td>
 
-<td>{{ txn.date }}</td>
+                        <span class="status-success">
+                            {{ txn.status }}
+                        </span>
 
-<td>
-        <span class="success-badge">
-            ✓ Success
-        </span>
-</td>
+                    </td>
 
-</tr>
+                </tr>
 
-{% endfor %}
+            {% endfor %}
 
-{% else %}
+            </tbody>
 
-<tr>
-    <td colspan="4" style="text-align:center;">
-        No Transactions Found
-    </td>
-</tr>
+        </table>
 
-{% endif %}
+        {% else %}
 
-</table>
+            <p style="text-align:center;padding:30px;">
+                No transactions found.
+            </p>
 
-</div>
+        {% endif %}
+
+        <div style="text-align:center;margin-top:30px;">
+
+            <a href="/dashboard" class="action-btn">
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
