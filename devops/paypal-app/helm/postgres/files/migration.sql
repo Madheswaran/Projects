@@ -29,17 +29,17 @@ CREATE TABLE IF NOT EXISTS transactions
 UPDATE customers
 SET
 phone='9876543210',
-address='Chennai'
+address='USA'
 WHERE email='ganesha@gmail.com';
 
 UPDATE customers
 SET
 phone='9876543211',
-address='Coimbatore'
+address='UK'
 WHERE email='muruga@gmail.com';
 
 UPDATE customers
 SET
 phone='9876543212',
-address='Madurai'
+address='Europe'
 WHERE email='lakshmi@gmail.com';

@@ -237,7 +237,9 @@ def transactions():
         WHERE sender_id=%s
         ORDER BY transaction_date DESC
         """,
-        (session["customer_id"],)
+        (
+            session["customer_id"],
+        )
     )
 
     rows = cur.fetchall()
@@ -245,27 +247,28 @@ def transactions():
     cur.close()
     conn.close()
 
-    txns = []
+    transactions = []
 
     for row in rows:
 
-        txns.append({
+        transactions.append({
 
             "id": row[0],
+
             "receiver": row[1],
-            "amount": row[2],
-            "date": row[3]
+
+            "amount": float(row[2]),
+
+            "date": row[3].strftime("%d-%b-%Y %I:%M %p"),
+
+            "status": "Success"
 
         })
 
     return render_template(
-
         "transactions.html",
-
         APP_NAME=APP_NAME,
-
-        transactions=txns
-
+        transactions=transactions
     )
 # ---------------------------------------------------
 # Pay
@@ -293,7 +296,7 @@ def pay():
     response = requests.post(
         f"{PAYMENT_SERVICE}/payment",
         json={
-            "customer_id": session["customer_id"],          # Temporary until session/login stores ID
+            "customer_id": session["customer_id"],
             "receiver": receiver,
             "amount": float(amount)
         }
@@ -301,11 +304,18 @@ def pay():
 
     result = response.json()
 
+    if response.status_code != 200:
+
+        return render_template(
+            "payment-failed.html",
+            APP_NAME=APP_NAME,
+            error=result["message"]
+        )
+
     return render_template(
         "payment-success.html",
         payment=result
     )
-
 # ---------------------------------------------------
 # Add Money
 # ---------------------------------------------------

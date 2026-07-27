@@ -42,13 +42,15 @@
 
 <tr>
 
-<th>Transaction ID</th>
+    <th>Transaction</th>
 
-<th>Receiver Email</th>
+    <th>Receiver</th>
 
-<th>Amount</th>
+    <th>Amount</th>
 
-<th>Date</th>
+    <th>Date</th>
+
+    <th>Status</th>
 
 </tr>
 
@@ -63,10 +65,16 @@
 <td>{{ txn.receiver }}</td>
 
 <td style="text-align:right;">
-    ₹ {{ txn.amount }}
+    ₹ {{ "%.2f"|format(txn.amount) }}
 </td>
 
 <td>{{ txn.date }}</td>
+
+<td>
+        <span class="success-badge">
+            ✓ Success
+        </span>
+</td>
 
 </tr>
 

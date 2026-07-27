@@ -92,6 +92,19 @@ def pay():
     sender_wallet = float(sender[3])
     receiver_wallet = float(receiver[3])
 
+    ###############################################
+    # Cannot pay yourself
+    ###############################################
+
+    if sender[0] == receiver[0]:
+
+        cur.close()
+        conn.close()
+
+        return jsonify({
+            "status": "FAILED",
+            "message": "You cannot send money to yourself."
+        }),400
     #################################################
     # Validate Balance
     #################################################
@@ -185,73 +198,6 @@ def pay():
         "customer_id": customer_id,
 
         "receiver": receiver_email,
-
-        "amount": amount,
-
-        "remaining_balance": new_wallet
-
-    })
-
-@app.route("/add-money", methods=["POST"])
-def add_money():
-
-    data = request.json
-
-    customer_id = data["customer_id"]
-
-    amount = float(data["amount"])
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute(
-        """
-        SELECT wallet
-        FROM customers
-        WHERE id=%s
-        """,
-        (customer_id,)
-    )
-
-    row = cur.fetchone()
-
-    if row is None:
-
-        cur.close()
-        conn.close()
-
-        return jsonify({
-
-            "status": "FAILED",
-
-            "message": "Customer not found"
-
-        }),404
-
-    new_wallet = float(row[0]) + amount
-
-    cur.execute(
-        """
-        UPDATE customers
-        SET wallet=%s
-        WHERE id=%s
-        """,
-        (
-            new_wallet,
-            customer_id
-        )
-    )
-
-    conn.commit()
-
-    cur.close()
-    conn.close()
-
-    return jsonify({
-
-        "status": "SUCCESS",
-
-        "message": "Money Added Successfully",
 
         "amount": amount,
 
