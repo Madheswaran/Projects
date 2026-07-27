@@ -258,16 +258,44 @@ def pay():
 # ---------------------------------------------------
 # Add Money
 # ---------------------------------------------------
-
-@app.route("/add-money")
+@app.route("/add-money", methods=["GET", "POST"])
 def add_money():
 
-    return """
-    <h2>Add Money</h2>
-    <p>This feature will be implemented later.</p>
-    <a href="/login">Home</a>
-    """
+    if "customer_id" not in session:
+        return redirect("/login")
 
+    if request.method == "GET":
+
+        return render_template(
+            "add-money.html",
+            APP_NAME=APP_NAME
+        )
+
+    amount = float(request.form["amount"])
+
+    response = requests.post(
+
+        f"{PAYMENT_SERVICE}/add-money",
+
+        json={
+
+            "customer_id": session["customer_id"],
+
+            "amount": amount
+
+        }
+
+    )
+
+    result = response.json()
+
+    return render_template(
+
+        "add-money-success.html",
+
+        payment=result
+
+    )
 
 # ---------------------------------------------------
 # Profile

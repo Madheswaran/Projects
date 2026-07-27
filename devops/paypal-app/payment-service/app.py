@@ -192,6 +192,73 @@ def pay():
 
     })
 
+@app.route("/add-money", methods=["POST"])
+def add_money():
+
+    data = request.json
+
+    customer_id = data["customer_id"]
+
+    amount = float(data["amount"])
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT wallet
+        FROM customers
+        WHERE id=%s
+        """,
+        (customer_id,)
+    )
+
+    row = cur.fetchone()
+
+    if row is None:
+
+        cur.close()
+        conn.close()
+
+        return jsonify({
+
+            "status": "FAILED",
+
+            "message": "Customer not found"
+
+        }),404
+
+    new_wallet = float(row[0]) + amount
+
+    cur.execute(
+        """
+        UPDATE customers
+        SET wallet=%s
+        WHERE id=%s
+        """,
+        (
+            new_wallet,
+            customer_id
+        )
+    )
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return jsonify({
+
+        "status": "SUCCESS",
+
+        "message": "Money Added Successfully",
+
+        "amount": amount,
+
+        "remaining_balance": new_wallet
+
+    })
+
 if __name__ == "__main__":
 
     app.run(
