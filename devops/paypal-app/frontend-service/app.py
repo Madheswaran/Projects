@@ -203,7 +203,7 @@ def dashboard():
     for row in rows:
         customer["transactions"].append({
             "id": row[0],
-            "description": row[1],
+            "receiver": row[1],
             "amount": row[2],
             "date": row[3]
         })
@@ -336,7 +336,7 @@ def add_money():
 
     response = requests.post(
 
-        f"{PAYMENT_SERVICE}/add-money",
+        f"{USER_SERVICE}/add-money",
 
         json={
 
