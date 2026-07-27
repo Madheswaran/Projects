@@ -267,6 +267,7 @@ def transactions():
 
         })
 
+    app.logger.warning(f"Transactions = {customer['transactions']}")
     return render_template(
         "transactions.html",
         APP_NAME=APP_NAME,
