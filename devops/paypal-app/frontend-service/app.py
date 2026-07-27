@@ -165,9 +165,6 @@ def dashboard():
 
     row = cur.fetchone()
 
-    cur.close()
-    conn.close()
-
     customer = {
         "id": row[0],
         "name": row[1],
@@ -184,13 +181,13 @@ def dashboard():
             id,
             receiver_email,
             amount,
-            created_at
+            transaction_date
 
         FROM transactions
 
-        WHERE customer_id=%s
+        WHERE sender_id=%s
 
-        ORDER BY created_at DESC
+        ORDER BY transaction_date DESC
 
         LIMIT 5
         """,
@@ -204,18 +201,15 @@ def dashboard():
     customer["transactions"] = []
 
     for row in rows:
-
         customer["transactions"].append({
-
             "id": row[0],
-
             "description": row[1],
-
             "amount": row[2],
-
             "date": row[3]
-
         })
+
+    cur.close()
+    conn.close()
 
     return render_template(
         "dashboard.html",
