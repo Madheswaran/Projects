@@ -61,26 +61,3 @@ data:
       '9876543212',
       'Madurai'
     );
-
-    INSERT INTO transactions
-    (
-      sender_id,
-      receiver_email,
-      amount
-    )
-    VALUES
-    (
-      1,
-      'muruga@gmail.com',
-      500
-    ),
-    (
-      2,
-      'ganesha@gmail.com',
-      250
-    ),
-    (
-      3,
-      'ganesha@gmail.com',
-      1000
-    );

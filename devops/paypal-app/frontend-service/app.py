@@ -168,6 +168,8 @@ def dashboard():
     )
 
     rows = cur.fetchall()
+    print("Customer ID =", customer_id)
+    print("Rows =", rows)
 
     customer["transactions"] = []
 

@@ -23,23 +23,3 @@ CREATE TABLE IF NOT EXISTS transactions
 
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-------------------------------------------------
-
-UPDATE customers
-SET
-phone='9876543210',
-address='USA'
-WHERE email='ganesha@gmail.com';
-
-UPDATE customers
-SET
-phone='9876543211',
-address='UK'
-WHERE email='muruga@gmail.com';
-
-UPDATE customers
-SET
-phone='9876543212',
-address='Europe'
-WHERE email='lakshmi@gmail.com';

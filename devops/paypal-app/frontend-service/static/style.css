@@ -243,6 +243,12 @@ body{
     margin-bottom:18px;
 
     box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.wallet-card,
+.customer-card{
+
+    height:360px;
 
 }
 
@@ -489,4 +495,80 @@ td{
 
 .profile-table td:first-child{
     font-weight:600;
+}
+
+/* ==========================================================
+   PAY PAGE
+========================================================== */
+
+.payment-card{
+
+    width:650px;
+
+    margin:0 auto;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:40px 50px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
+
+}
+
+.payment-card h2{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.form-row{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.form-row label{
+
+    width:180px;
+
+    font-size:20px;
+
+    font-weight:600;
+
+}
+
+.form-row input{
+
+    flex:1;
+
+    padding:12px 15px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:18px;
+
+}
+
+.form-actions{
+
+    text-align:center;
+
+    margin-top:20px;
+
+}
+
+.form-actions .action-btn{
+
+    width:220px;
+
 }
