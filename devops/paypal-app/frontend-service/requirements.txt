@@ -3,3 +3,4 @@ gunicorn==23.0.0
 pytest==8.4.1
 requests==2.32.4
 psycopg2-binary
+prometheus-client==0.22.1
