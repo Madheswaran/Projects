@@ -6,6 +6,10 @@ metadata:
 
   name: frontend-service
 
+  labels:
+
+    app: frontend-service
+
 spec:
 
   type: {{ .Values.service.type }}
@@ -16,6 +20,7 @@ spec:
 
   ports:
 
-  - port: {{ .Values.service.port }}
+  - name: http
+    port: {{ .Values.service.port }}
 
     targetPort: {{ .Values.service.targetPort }}
