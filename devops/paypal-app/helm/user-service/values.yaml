@@ -1,9 +1,9 @@
 image:
-  repository: acrpaypal1785210254.azurecr.io/user-service
+  repository: acrpaypal1785312604.azurecr.io/user-service
   tag: latest
   pullPolicy: Always 
 
-replicaCount: 1
+replicaCount: 3
 
 service:
   type: ClusterIP
