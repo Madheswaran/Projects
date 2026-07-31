@@ -1,5 +1,6 @@
 from prometheus_client import generate_latest
 from prometheus_client import CONTENT_TYPE_LATEST
+from prometheus_client import Counter
 
 from flask import (
     Flask,
@@ -22,6 +23,11 @@ DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("POSTGRES_DB")
 DB_USER = os.getenv("POSTGRES_USER")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+
+frontend_login_requests = Counter(
+    "frontend_login_requests_total",
+    "Total successful frontend login requests"
+)
 
 # ---------------------------------------------------
 # Configuration
@@ -110,6 +116,8 @@ def login():
         )
 
     customer = response.json()
+    #metrics
+    frontend_login_requests.inc()
 
     session["customer_id"] = customer["id"]
 
