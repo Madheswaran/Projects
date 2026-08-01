@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+INGRESS_VERSION="4.13.2"
+ARGOCD_VERSION="8.3.0"
+
 echo "==============================================="
 echo " PayPal Checkout Platform Bootstrap"
 echo "==============================================="
@@ -156,19 +159,17 @@ echo ""
 echo "Docker Registry Secret Created"
 
 ############################################################
-# Install NGINX Ingress
+# Install NGINX Ingress (Offline)
 ############################################################
 
 echo ""
 echo "========== Installing Ingress =========="
 
-helm repo add ingress-nginx \
-https://kubernetes.github.io/ingress-nginx
-
-helm repo update
+echo ""
+echo "Installing NGINX Ingress..."
 
 helm upgrade --install ingress-nginx \
-ingress-nginx/ingress-nginx \
+./setup/charts/ingress-nginx-4.13.2.tgz \
 --namespace ingress-nginx \
 --create-namespace \
 --wait \
@@ -186,24 +187,15 @@ kubectl wait \
 kubectl get all -n ingress-nginx
 
 ############################################################
-# Install ArgoCD
+# Install ArgoCD (Offline)
 ############################################################
 
 echo ""
 echo "========== Installing ArgoCD =========="
 
-helm repo add argo \
-https://argoproj.github.io/argo-helm
-
-helm repo update
-
 kubectl create namespace argocd \
 --dry-run=client \
 -o yaml | kubectl apply -f -
-
-############################################################
-# Check Existing Helm Release
-############################################################
 
 echo ""
 echo "Checking existing ArgoCD release..."
@@ -217,69 +209,173 @@ if [[ "$STATUS" == "pending-install" || \
       "$STATUS" == "pending-rollback" ]]
 then
 
-    echo ""
-    echo "======================================================"
-    echo "ERROR"
-    echo ""
-    echo "ArgoCD Helm Release is currently:"
-    echo ""
-    echo "    $STATUS"
-    echo ""
-    echo "A previous install or upgrade was interrupted."
-    echo ""
-    echo "Resolve it using:"
-    echo ""
-    echo "helm history argocd -n argocd"
-    echo "helm rollback argocd 1 -n argocd"
-    echo ""
-    echo "After rollback rerun this script."
-    echo "======================================================"
+echo ""
+echo "Helm release is stuck in:"
+echo "$STATUS"
+echo ""
+echo "Rollback before continuing."
 
-    exit 1
+exit 1
 
 fi
 
-############################################################
-# Install / Upgrade ArgoCD
-############################################################
-
 echo ""
-echo "Installing / Upgrading ArgoCD..."
+echo "Installing ArgoCD..."
 
 helm upgrade --install argocd \
-argo/argo-cd \
+./setup/charts/argo-cd-8.3.0.tgz \
 --namespace argocd \
 --set server.service.type=LoadBalancer \
 --wait \
---atomic \
 --timeout 10m
 
-############################################################
-# Wait for ArgoCD Deployments
-############################################################
-
 echo ""
-echo "Waiting for ArgoCD components..."
+echo "Waiting for ArgoCD..."
 
 kubectl wait \
---for=condition=Available \
-deployment/argocd-server \
+--for=condition=Available deployment/argocd-server \
 -n argocd \
 --timeout=300s
 
 kubectl wait \
---for=condition=Available \
-deployment/argocd-repo-server \
+--for=condition=Available deployment/argocd-repo-server \
 -n argocd \
 --timeout=300s
 
 kubectl wait \
---for=condition=Available \
-deployment/argocd-applicationset-controller \
+--for=condition=Available deployment/argocd-applicationset-controller \
 -n argocd \
 --timeout=300s
 
 kubectl get all -n argocd
+
+# ############################################################
+# # Install NGINX Ingress
+# ############################################################
+
+# echo ""
+# echo "========== Installing Ingress =========="
+
+# helm repo add ingress-nginx \
+# https://kubernetes.github.io/ingress-nginx \
+# 2>/dev/null || true
+
+# echo ""
+# echo "Installing NGINX Ingress..."
+
+# helm upgrade --install ingress-nginx \
+# ingress-nginx/ingress-nginx \
+# --version 4.13.2 \
+# --namespace ingress-nginx \
+# --create-namespace \
+# --disable-openapi-validation \
+# --wait \
+# --timeout 15m
+
+# echo ""
+# echo "Waiting for Ingress Controller..."
+
+# kubectl wait \
+# --namespace ingress-nginx \
+# --for=condition=Ready pod \
+# --selector=app.kubernetes.io/component=controller \
+# --timeout=600s
+
+# kubectl get all -n ingress-nginx
+
+
+# ############################################################
+# # Install ArgoCD
+# ############################################################
+
+# echo ""
+# echo "========== Installing ArgoCD =========="
+
+# helm repo add argo \
+# https://argoproj.github.io/argo-helm \
+# 2>/dev/null || true
+
+# kubectl create namespace argocd \
+# --dry-run=client \
+# -o yaml | kubectl apply --validate=false -f -
+
+############################################################
+# Check Existing Helm Release
+############################################################
+
+# echo ""
+# echo "Checking existing ArgoCD release..."
+
+# STATUS=$(helm status argocd \
+# -n argocd \
+# 2>/dev/null | awk '/^STATUS:/ {print $2}' || true)
+
+# if [[ "$STATUS" == "pending-install" || \
+#       "$STATUS" == "pending-upgrade" || \
+#       "$STATUS" == "pending-rollback" ]]
+# then
+
+#     echo ""
+#     echo "======================================================"
+#     echo "ERROR"
+#     echo ""
+#     echo "ArgoCD release is currently:"
+#     echo ""
+#     echo "    $STATUS"
+#     echo ""
+#     echo "Rollback first:"
+#     echo ""
+#     echo "helm history argocd -n argocd"
+#     echo "helm rollback argocd <revision> -n argocd"
+#     echo ""
+#     echo "======================================================"
+
+#     exit 1
+
+# fi
+
+# ############################################################
+# # Install / Upgrade ArgoCD
+# ############################################################
+
+# echo ""
+# echo "Installing ArgoCD..."
+
+# helm upgrade --install argocd \
+# argo/argo-cd \
+# --version 8.3.0 \
+# --namespace argocd \
+# --set server.service.type=LoadBalancer \
+# --disable-openapi-validation \
+# --wait \
+# --timeout 15m
+
+# ############################################################
+# # Wait for ArgoCD
+# ############################################################
+
+# echo ""
+# echo "Waiting for ArgoCD..."
+
+# kubectl wait \
+# --for=condition=Available \
+# deployment/argocd-server \
+# -n argocd \
+# --timeout=600s
+
+# kubectl wait \
+# --for=condition=Available \
+# deployment/argocd-repo-server \
+# -n argocd \
+# --timeout=600s
+
+# kubectl wait \
+# --for=condition=Available \
+# deployment/argocd-applicationset-controller \
+# -n argocd \
+# --timeout=600s
+
+# kubectl get all -n argocd
 
 ############################################################
 # Wait for ArgoCD LoadBalancer IP

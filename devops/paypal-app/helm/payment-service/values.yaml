@@ -2,7 +2,7 @@ paymentService:
   replicaCount: 3
 
   image:
-    repository: acrpaypal1785470827.azurecr.io/payment-service
+    repository: acrpaypal1785595867.azurecr.io/payment-service
     tag: latest
     pullPolicy: Always
 
