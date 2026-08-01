@@ -1,6 +1,6 @@
 from prometheus_client import generate_latest
 from prometheus_client import CONTENT_TYPE_LATEST
-from prometheus_client import Counter
+from prometheus_client import Counter, Gauge
 
 from flask import (
     Flask,
@@ -27,6 +27,22 @@ DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 frontend_login_requests = Counter(
     "frontend_login_requests_total",
     "Total successful frontend login requests"
+)
+
+frontend_failed_login_requests = Counter(
+    "frontend_failed_login_requests_total",
+    "Total failed login attempts"
+)
+
+# Logout counter
+frontend_logout_requests = Counter(
+    "frontend_logout_requests_total",
+    "Total logout requests"
+)
+
+frontend_active_users = Gauge(
+    "frontend_active_users",
+    "Current logged in users"
 )
 
 # ---------------------------------------------------
@@ -107,6 +123,7 @@ def login():
         )
 
     if response.status_code != 200:
+        frontend_failed_login_requests.inc()
 
         return render_template(
             "login.html",
@@ -118,6 +135,7 @@ def login():
     customer = response.json()
     #metrics
     frontend_login_requests.inc()
+    frontend_active_users.inc()
 
     session["customer_id"] = customer["id"]
 
@@ -362,11 +380,14 @@ def profile():
 # ---------------------------------------------------
 # Logout
 # ---------------------------------------------------
-
 @app.route("/logout")
 def logout():
+
+    frontend_logout_requests.inc()
+
     session.clear()
-    return redirect("/login")
+
+    return redirect("/")
 
 
 # ---------------------------------------------------
