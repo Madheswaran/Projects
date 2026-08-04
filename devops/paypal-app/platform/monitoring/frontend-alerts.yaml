@@ -17,7 +17,7 @@ spec:
 
       expr: kube_deployment_status_replicas_available{deployment="frontend-service"} == 0
 
-      for: 30s
+      for: 10s
 
       labels:
         severity: critical
