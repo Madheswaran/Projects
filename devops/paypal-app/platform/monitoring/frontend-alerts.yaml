@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: frontend-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+
+spec:
+  groups:
+
+  - name: frontend.rules
+
+    rules:
+
+    - alert: FrontendDown
+
+      expr: kube_deployment_status_replicas_available{deployment="frontend-service"} == 0
+
+      for: 30s
+
+      labels:
+        severity: critical
+
+      annotations:
+        summary: "Frontend service is down"
+
+        description: "Frontend has not been reachable for more than 30 seconds."
